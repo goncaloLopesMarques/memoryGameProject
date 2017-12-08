@@ -44,8 +44,56 @@ io.on('connection', function (socket) {
 		socket.emit('my_active_games_changed');
 		// Notification to all clients
 		io.emit('lobby_changed');
-    });
+	});
 
+	socket.on('play',function(data){
+		let game = games.gameByID(data.gameID);
+		if(game ==null){
+			socket.emit('invalid_play',{
+				'type': 'Invalid_Game', 'game':null
+			});
+			return;
+		}
+
+		var numPlayer =0;
+		if(game.player1SocketID == socket.id){
+			numPlayer = 1;
+		}else if(game.player2SocketID == socket.id){
+			numPlayer = 2;
+		}
+		if(numPlayer === 0){
+			socket.emit('invalid_play',{
+				'type':'Invalid_Player',
+				'game': game
+			});
+			return
+		}
+
+		if(game.play(numPlayer, data.index)){
+			io.to(game.gameID).emit('game_changed',game)
+		}else{
+			socket.emit('invalid_play',{
+				'type': 'Invalid_Play',
+				'game': game
+			});
+			return;
+		}
+
+
+	})
+	
+	socket.on('remove_game',function(data){
+		let game = games.removeGame(data.gameID,socket.id);
+		socket.emit('my_active_games_changed');
+		io.emit('lobby_changed');
+	  });
+
+	socket.on('join_game',function(data){
+		let game = games.joinGame(data.gameID, data.playerName, socket.id);
+		socket.join(game.gameID);
+		io.to(game.gameID).emit('my_active_games_changed');
+		io.emit('lobby_changed');
+	})
     socket.on('get_my_activegames', function (){
 		var my_games = games.getConnectedGamesOf(socket.id);
 		socket.emit('my_active_games',my_games);
@@ -56,10 +104,5 @@ io.on('connection', function (socket) {
 		socket.emit('my_lobby_games',my_games);
 	});
 
-	socket.on('remove_game',function(data){
-	  let game = games.removeGame(data.gameID,socket.id);
-	  socket.emit('my_active_games_changed');
-	  io.emit('lobby_changed');
-	});
 
 });

@@ -56,6 +56,33 @@
             my_lobby_games(games){
                 this.lobbyGames = games;
             },
+            game_changed(game){
+                for(var lobbyGame of this.lobbyGames){
+                    if(game.gameID == lobbyGame.gameID){
+                        Object.assign(lobbyGame,game);
+                        break;
+                    }
+                }
+                for(var activeGame of this.activeGames){
+                    if(game.gameID == activeGame.gameID){
+                        Object.assign(activeGame,game);
+                        break;
+                    }
+                }
+            },
+            invalid_play(errorObject){
+                if(errorObject.type == 'Invalid_game'){
+                    alert("error: Game does not exist on server");
+                }else if(errorObject.type == 'Invalid_Player'){
+                    alert("Error: Player not valid for this game");
+                }else if(errorObject.type == 'Invalid_Play'){
+                    alert("Error: This play aint valid ot not your turn");
+                }else{
+                    alert("Error: "+errorObject.type);
+                }
+
+            }
+
         },        
         methods: {
             loadLobby(){
@@ -77,10 +104,20 @@
                 }
             },
             join(game){
-                // Click to join game
+                if(game.player1 == this.currentPlayer){
+                    alert('Cannot join because its your game');
+                    return;
+                }
+                this.$socket.emit('join_game',{
+                     gameID: game.gameID,
+                     playerName: this.currentPlayer
+                });
             },
             play(game, index){
-                // play a game - click on piece on specified index
+               this.$socket.emit('play',{
+                   gameID: game.gameID, 
+                   index:index
+               });
             },
             close(game){
               this.$socket.emit('remove_game',{

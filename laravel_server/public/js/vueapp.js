@@ -47070,7 +47070,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47142,6 +47142,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         my_lobby_games: function my_lobby_games(games) {
             this.lobbyGames = games;
+        },
+        game_changed: function game_changed(game) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this.lobbyGames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var lobbyGame = _step.value;
+
+                    if (game.gameID == lobbyGame.gameID) {
+                        Object.assign(lobbyGame, game);
+                        break;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this.activeGames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var activeGame = _step2.value;
+
+                    if (game.gameID == activeGame.gameID) {
+                        Object.assign(activeGame, game);
+                        break;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+        },
+        invalid_play: function invalid_play(errorObject) {
+            if (errorObject.type == 'Invalid_game') {
+                alert("error: Game does not exist on server");
+            } else if (errorObject.type == 'Invalid_Player') {
+                alert("Error: Player not valid for this game");
+            } else if (errorObject.type == 'Invalid_Play') {
+                alert("Error: This play aint valid ot not your turn");
+            } else {
+                alert("Error: " + errorObject.type);
+            }
         }
     },
     methods: {
@@ -47163,10 +47231,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         join: function join(game) {
-            // Click to join game
+            if (game.player1 == this.currentPlayer) {
+                alert('Cannot join because its your game');
+                return;
+            }
+            this.$socket.emit('join_game', {
+                gameID: game.gameID,
+                playerName: this.currentPlayer
+            });
         },
         play: function play(game, index) {
-            // play a game - click on piece on specified index
+            this.$socket.emit('play', {
+                gameID: game.gameID,
+                index: index
+            });
         },
         close: function close(game) {
             this.$socket.emit('remove_game', {
@@ -47501,9 +47579,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     computed: {
+        ownPlayerNumber: function ownPlayerNumber() {
+            if (this.game.player1SocketID == this.$parent.socketId) {
+                return 1;
+            } else if (this.game.player2SocketID == this.$parent.socketId) {
+                return 2;
+            }
+            return 0;
+        },
         message: function message() {
             // return Message to show
-
+            if (!this.game.gameStarted) {
+                return "Game has not started yet";
+            } else if (this.game.gameEnded) {
+                if (this.game.winner == this.ownPlayerNumber) {
+                    return "Game has ended. YOU WIN!!";
+                } else if (this.game.winner == 0) {
+                    return "Game has ended. It's a Tie!!";
+                }
+                return "Game has ended and " + this.adversaryName + "'s won. YOU LOST!!";
+            } else {
+                if (this.game.playerTurn == this.ownPlayerNumber) {
+                    return "It's your turn";
+                } else {
+                    return "It's " + this.adversaryName + "'s turn";
+                }
+            }
+            return "Game is inconsistent";
+        },
+        adversaryName: function adversaryName() {
+            var ownNumber = this.ownPlayerNumber;
+            if (ownNumber == 1) {
+                return this.game.player2;
+            }
+            if (ownNumber == 2) {
+                return this.game.player1;
+            }
+            return "unnknown";
+        },
+        alerttype: function alerttype() {
+            if (!this.game.gameStarted) {
+                return "aler-warning";
+            } else if (this.game.gameEnded) {
+                if (this.game.winner == this.ownPlayerNumber) {
+                    return "alert-success";
+                } else if (this.game.winner == 0) {
+                    return "alert-info";
+                }
+                return "alert-danger";
+            } else {
+                if (this.game.playerTurn == this.ownPlayerNumber) {
+                    return "alert-success";
+                } else {
+                    return "alert-info";
+                }
+            }
         }
     },
     methods: {
@@ -47511,7 +47641,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Click to close game
             this.$parent.close(this.game);
         },
-        clickPiece: function clickPiece(index) {},
+        clickPiece: function clickPiece(index) {
+            if (!this.game.gameEnded) {
+                if (this.game.playerTurn != this.ownPlayerNumber) {
+                    alert("its not your turn!");
+                } else {
+                    if (this.game.board[index] == 0) {
+                        this.$parent.play(this.game, index);
+                    }
+                }
+            }
+        },
 
 
         pieceImageURL: function pieceImageURL(piece) {
