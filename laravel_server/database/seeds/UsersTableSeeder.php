@@ -14,13 +14,12 @@ class UsersTableSeeder extends Seeder
     {
         $faker = Faker\Factory::create('pt_PT');
 
-        $departments = DB::table('departments')->pluck('id')->toArray();
         for ($i = 0; $i < $this->numberOfUsers; ++$i) {
-            DB::table('users')->insert($this->fakeUser($faker, $faker->randomElement($departments)));
+            DB::table('users')->insert($this->fakeUser($faker));
         }
     }
 
-    private function fakeUser(Faker\Generator $faker, $departmentId)
+    private function fakeUser(Faker\Generator $faker)
     {
         static $password;
         $createdAt = Carbon\Carbon::now()->subDays(30);
@@ -30,8 +29,7 @@ class UsersTableSeeder extends Seeder
             'email' => $faker->unique()->safeEmail,
             'password' => $password ?: $password = bcrypt('secret'),
             'remember_token' => str_random(10),
-            'age' => $faker->numberBetween(18, 75),
-            'department_id' => $departmentId,
+            'nickname' => $faker->name,
             'created_at' => $createdAt,
             'updated_at' => $updatedAt,
         ];
