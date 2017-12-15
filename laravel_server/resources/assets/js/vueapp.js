@@ -21,9 +21,11 @@ Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 const user = Vue.component('user', require('./components/user.vue'));
 const singleplayer_game = Vue.component('singlegame', require('./components/singleplayer_tictactoe.vue'));
 const multiplayerGame = Vue.component('multiplayergame', require('./components/multiplayer_tictactoe.vue'));
+const login = Vue.component('login', require('./components/login.vue'));
 
 const routes = [
-  { path: '/', redirect: '/users' },
+  { path: '/', redirect: '/login' },
+  { path: '/login', component: login },
   { path: '/users', component: user },
   { path: '/singletictactoe', component: singleplayer_game },
   { path: '/multitictactoe', component: multiplayerGame }
@@ -38,7 +40,6 @@ const app = new Vue({
   data:{
     player1:undefined,
     player2: undefined,
-    departments: [],
   }
 }).$mount('#app');
 
