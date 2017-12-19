@@ -3,7 +3,7 @@
 @section('title', 'Vue.js App')
 
 @section('content')
-    <router-link to="/users">Create User</router-link>
+    <router-link to="/createUser">Create User</router-link>
     <router-link to="/login">Login</router-link>
     <router-link to="/multitictactoe">Multiplayer TicTacToe</router-link>
 

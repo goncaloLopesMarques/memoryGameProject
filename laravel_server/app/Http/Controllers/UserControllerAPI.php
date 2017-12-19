@@ -31,14 +31,13 @@ class UserControllerAPI extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'name' => 'required',
+                'fullName' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'nickname' =>'required|unique:users',
                 'password' => 'min:3'
             ]);
         $user = new User();
         $user->fill($request->all());
-        $user->password = Hash::make($user->password);
         $user->save();
         return response()->json(new UserResource($user), 201);
     }

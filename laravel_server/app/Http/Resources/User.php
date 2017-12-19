@@ -15,12 +15,10 @@ class User extends Resource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'fullName' => $this->fullName,
+            'nickName' => $this->nickName,
             'email' => $this->email,
-            'age' => $this->age,
-            'department_id' => $this->department_id,
-            'department' => $this->department->name,
+            'password' => $this->password,
         ];
     }
 }

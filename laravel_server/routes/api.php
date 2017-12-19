@@ -21,6 +21,7 @@ Route::get('users', 'UserControllerAPI@getUsers');
 Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
 Route::get('users/{id}', 'UserControllerAPI@getUser');
 Route::post('users', 'UserControllerAPI@store');
+Route::post('/register','Auth\RegisterController@create');
 Route::put('users/{id}', 'UserControllerAPI@update');
 Route::delete('users/{id}', 'UserControllerAPI@delete');
  

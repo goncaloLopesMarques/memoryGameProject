@@ -21,7 +21,10 @@
          </div>  
          <br>      
          <div align="center">
-         	<button type="button">Login</button>
+         	<button type="button" class="btn btn-primary">Login</button>
+			 <router-link class="btn btn-default" :to="{ path: '/createUser' }">
+                            Register User
+                        </router-link>
          </div>
 	</div>	
     			
