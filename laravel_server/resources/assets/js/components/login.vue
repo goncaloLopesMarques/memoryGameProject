@@ -1,45 +1,65 @@
 <template>
 	<div>
 		<link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
-		<div>
-			<h1 :class="$style.red">{{ title }}</h1>
-		</div>
    		<br>
    		<br>
    		<br>
          <div align = "center">
             <table>
            <tr>
-             <th :class="$style.tabela">Nickname</th>
-             <th><input type="text" name="nickName"></th>
+             <th :class="$style.tabela">Nickname </th>
+             <th><input type="text" name="nickName" v-model="user.nickname"></th>
             <tr>
              <th :class="$style.tabela">Password</th>
-             <th><input type="password" name="password"></th>
+             <th><input type="password" name="password" v-model="user.password"></th>
             </tr>
             </tr>
           </table>
          </div>  
          <br>      
          <div align="center">
-         	<button type="button" class="btn btn-primary">Login</button>
-			 <router-link class="btn btn-default" :to="{ path: '/createUser' }">
-                            Register User
-                        </router-link>
+         	 <button type="button" class="loginButton">Login</button>
+			 <router-link class="registerButton" :to="{ path: '/createUser' }">Register User</router-link>
+             <router-link class="backButton" :to="{ path: '/' }">Back</router-link>
+             <br>
          </div>
 	</div>	
     			
 </template>
 
 <script type="text/javascript">
-
-	export default {
-		data: function(){
-			return { 
-		        title: 'Memory Game',
-			}
-		},
-	    methods: {
-	        
+   export default {
+        data() {
+            return {
+                title: 'Memory Game',
+                user: {
+                    fullName: '',
+                    nickName:'',
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                },
+            }
+        }, 
+		    methods: {
+	        resetUser() {
+                    this.user = {
+                    nickName: null,
+                    password: null,
+                }
+            },
+			 login(user) {
+                axios.post('API.login', user)
+                    .then(response => {
+                        this.resetUser()
+                        let successMessage = response.data.message
+                        alert(successMessage)
+                    })
+                     .catch(error => {
+                        let data = error.response.data
+						console.log(data); 	
+                    });
+	        }
 	    },
 	    components: {
 	    	
@@ -51,6 +71,63 @@
 	}
 </script>
 <style>
+.loginButton {
+	background-color:#41b883;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #35495e;
+	display:inline-block;
+	cursor:pointer;
+	color:#35495e;
+	font-family:Arial;
+	font-size:12px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.loginButton:active {
+	position:relative;
+	top:1px;
+}
+.registerButton {
+	background-color:#35495e;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#41b883;
+	font-family:Arial;
+	font-size:12px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.registerButton:active {
+	position:relative;
+	top:1px;
+}
+.backButton {
+	background-color:#ffffff;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #000000;
+	display:inline-block;
+	cursor:pointer;
+	color:#000000;
+	font-family:Arial;
+	font-size:12px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.backButton:active {
+	position:relative;
+	top:1px;
+}
 table, th, td {
     border: 1px solid black;
     color: black;

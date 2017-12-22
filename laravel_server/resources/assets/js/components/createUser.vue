@@ -38,10 +38,8 @@
                     </div>
 
                     <div class="text-center">
-                        <button class="btn btn-primary">Register</button>
-                        <router-link class="btn btn-default" :to="{ path: '/' }">
-                            Back
-                        </router-link>
+                        <button class="registerButton">Register</button>
+                        <router-link class="backButton" :to="{ path: '/' }">Back</router-link>
                         <br><br>
                     </div>
                 </form>
@@ -81,7 +79,7 @@
                 }
             },
 	        register(user) {
-                axios.post('api/register', user)
+                axios.post('API.createUser', user)
                     .then(response => {
                         this.resetUser()
                         let successMessage = response.data.message
@@ -105,5 +103,35 @@
 </script>
 
 <style>
+.registerButton {
+	background-color:#35495e;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#41b883;
+	font-family:Arial;
+	font-size:12px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.backButton {
+	background-color:#ffffff;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #000000;
+	display:inline-block;
+	cursor:pointer;
+	color:#000000;
+	font-family:Arial;
+	font-size:12px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
 
 </style>
