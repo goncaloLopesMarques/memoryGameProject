@@ -79,7 +79,7 @@
                 }
             },
 	        register(user) {
-                axios.post('API.createUser', user)
+                axios.post('/api/register', user)
                     .then(response => {
                         this.resetUser()
                         let successMessage = response.data.message

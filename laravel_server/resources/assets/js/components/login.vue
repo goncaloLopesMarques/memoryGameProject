@@ -8,7 +8,7 @@
             <table>
            <tr>
              <th :class="$style.tabela">Nickname </th>
-             <th><input type="text" name="nickName" v-model="user.nickname"></th>
+             <th><input type="text" name="nickName" v-model="user.username"></th>
             <tr>
              <th :class="$style.tabela">Password</th>
              <th><input type="password" name="password" v-model="user.password"></th>
@@ -18,7 +18,7 @@
          </div>  
          <br>      
          <div align="center">
-         	 <button type="button" class="loginButton">Login</button>
+         	 <button type="button" class="loginButton" v-on:click="login">Login</button>
 			 <router-link class="registerButton" :to="{ path: '/createUser' }">Register User</router-link>
              <router-link class="backButton" :to="{ path: '/' }">Back</router-link>
              <br>
@@ -31,27 +31,20 @@
    export default {
         data() {
             return {
-                title: 'Memory Game',
                 user: {
-                    fullName: '',
-                    nickName:'',
-                    email: '',
-                    password: '',
-                    password_confirmation: '',
+					client_id: 2,
+					client_secret: 'Hu4OEZojQvN7S6ReYAj0RInhcHqcx94PAHp9QEPu',
+					grant_type: 'password',
+                    username:'',
+					password: '',
                 },
             }
         }, 
-		    methods: {
-	        resetUser() {
-                    this.user = {
-                    nickName: null,
-                    password: null,
-                }
-            },
-			 login(user) {
-                axios.post('API.login', user)
+		    methods: {	        
+			 login: function(user) {
+                axios.post('/oauth/token', this.user)
                     .then(response => {
-                        this.resetUser()
+                        this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
                         let successMessage = response.data.message
                         alert(successMessage)
                     })

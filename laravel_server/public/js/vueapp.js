@@ -1405,7 +1405,7 @@ module.exports = Cancel;
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(81);
+var content = __webpack_require__(90);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1429,7 +1429,7 @@ if(false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(92);
+module.exports = __webpack_require__(96);
 
 
 /***/ }),
@@ -1441,6 +1441,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_socket_io__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_socket_io___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_socket_io__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_auth_js__ = __webpack_require__(105);
 /*jshint esversion: 6 */
 
 /**
@@ -1456,17 +1457,18 @@ window.Vue = __webpack_require__(39);
 
 
 
-Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 
+Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
+Vue.use(__WEBPACK_IMPORTED_MODULE_2__components_auth_js__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_socket_io___default.a, 'http://192.168.10.10:8080');
 //Vue.use(VueSocketio, 'http://192.168.10.1:8080');
 
 var user = Vue.component('user', __webpack_require__(44));
 var singleplayer_game = Vue.component('singlegame', __webpack_require__(60));
 var multiplayerGame = Vue.component('multiplayergame', __webpack_require__(65));
-var index = Vue.component('index', __webpack_require__(102));
-var createUser = Vue.component('createUser', __webpack_require__(87));
-var login = Vue.component('login', __webpack_require__(80));
+var index = Vue.component('index', __webpack_require__(80));
+var createUser = Vue.component('createUser', __webpack_require__(84));
+var login = Vue.component('login', __webpack_require__(89));
 
 var routes = [{ path: '/', redirect: '/index' }, { path: '/users', component: user }, { path: '/createUser', component: createUser }, { path: '/singletictactoe', component: singleplayer_game }, { path: '/multitictactoe', component: multiplayerGame }, { path: '/index', component: index }, { path: '/login', component: login }];
 
@@ -47636,27 +47638,16 @@ if (false) {
 /* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var disposed = false
-var cssModules = {}
-module.hot && module.hot.accept(["!!vue-style-loader!css-loader?{\"localIdentName\":\"[hash:base64]_1\",\"importLoaders\":true,\"modules\":true}!../../../../node_modules/vue-loader/lib/style-compiler/index?{\"vue\":true,\"id\":\"data-v-f67ccf08\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector?type=styles&index=1&bustCache!./login.vue"], function () {
-  var oldLocals = cssModules["$style"]
-  if (!oldLocals) return
-  var newLocals = __webpack_require__(13)
-  if (JSON.stringify(newLocals) === JSON.stringify(oldLocals)) return
-  cssModules["$style"] = newLocals
-  __webpack_require__(82).rerender("data-v-f67ccf08")
-})
+var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(83)
-  cssModules["$style"] = __webpack_require__(13)
-Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
+  __webpack_require__(81)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(85)
+var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(86)
+var __vue_template__ = __webpack_require__(83)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -47673,7 +47664,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/login.vue"
+Component.options.__file = "resources/assets/js/components/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -47683,282 +47674,36 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f67ccf08", Component.options)
+    hotAPI.createRecord("data-v-89cc1536", Component.options)
   } else {
-    if (module.hot.data.cssModules && Object.keys(module.hot.data.cssModules) !== Object.keys(cssModules)) {
-      delete Component.options._Ctor
-    }
-    hotAPI.reload("data-v-f67ccf08", Component.options)
+    hotAPI.reload("data-v-89cc1536", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
-    data.cssModules = cssModules
     disposed = true
   })
 })()}
 
 module.exports = Component.exports
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n._2ql-gHrunOPaadvRC7rpdO_1 {\r\n\tfont: 100 20px/1.2 'Merienda One', Helvetica, sans-serif;\r\n  \tcolor: rgba(0,0,0,0.7);\r\n  \ttext-shadow: 3px 3px 3px #fff;\n}\n._3rxVUj2BPN4SsGYa4-qXbm_1 {\r\n  font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;\r\n  color: rgba(0,0,0,0.7);\r\n  text-shadow: 3px 3px 3px #fff;\r\n  text-align: center;\n}\n._1Psbf8AUd2dSMMee53YNon_1 {\r\n  font-weight: bold;\n}\r\n", ""]);
-
-// exports
-exports.locals = {
-	"tabela": "_2ql-gHrunOPaadvRC7rpdO_1",
-	"red": "_3rxVUj2BPN4SsGYa4-qXbm_1",
-	"bold": "_1Psbf8AUd2dSMMee53YNon_1"
-};
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports) {
-
-var Vue // late bind
-var version
-var map = (window.__VUE_HOT_MAP__ = Object.create(null))
-var installed = false
-var isBrowserify = false
-var initHookName = 'beforeCreate'
-
-exports.install = function (vue, browserify) {
-  if (installed) { return }
-  installed = true
-
-  Vue = vue.__esModule ? vue.default : vue
-  version = Vue.version.split('.').map(Number)
-  isBrowserify = browserify
-
-  // compat with < 2.0.0-alpha.7
-  if (Vue.config._lifecycleHooks.indexOf('init') > -1) {
-    initHookName = 'init'
-  }
-
-  exports.compatible = version[0] >= 2
-  if (!exports.compatible) {
-    console.warn(
-      '[HMR] You are using a version of vue-hot-reload-api that is ' +
-        'only compatible with Vue.js core ^2.0.0.'
-    )
-    return
-  }
-}
-
-/**
- * Create a record for a hot module, which keeps track of its constructor
- * and instances
- *
- * @param {String} id
- * @param {Object} options
- */
-
-exports.createRecord = function (id, options) {
-  var Ctor = null
-  if (typeof options === 'function') {
-    Ctor = options
-    options = Ctor.options
-  }
-  makeOptionsHot(id, options)
-  map[id] = {
-    Ctor: Ctor,
-    options: options,
-    instances: []
-  }
-}
-
-/**
- * Make a Component options object hot.
- *
- * @param {String} id
- * @param {Object} options
- */
-
-function makeOptionsHot(id, options) {
-  if (options.functional) {
-    var render = options.render
-    options.render = function (h, ctx) {
-      var instances = map[id].instances
-      if (instances.indexOf(ctx.parent) < 0) {
-        instances.push(ctx.parent)
-      }
-      return render(h, ctx)
-    }
-  } else {
-    injectHook(options, initHookName, function() {
-      var record = map[id]
-      if (!record.Ctor) {
-        record.Ctor = this.constructor
-      }
-      record.instances.push(this)
-    })
-    injectHook(options, 'beforeDestroy', function() {
-      var instances = map[id].instances
-      instances.splice(instances.indexOf(this), 1)
-    })
-  }
-}
-
-/**
- * Inject a hook to a hot reloadable component so that
- * we can keep track of it.
- *
- * @param {Object} options
- * @param {String} name
- * @param {Function} hook
- */
-
-function injectHook(options, name, hook) {
-  var existing = options[name]
-  options[name] = existing
-    ? Array.isArray(existing) ? existing.concat(hook) : [existing, hook]
-    : [hook]
-}
-
-function tryWrap(fn) {
-  return function (id, arg) {
-    try {
-      fn(id, arg)
-    } catch (e) {
-      console.error(e)
-      console.warn(
-        'Something went wrong during Vue component hot-reload. Full reload required.'
-      )
-    }
-  }
-}
-
-function updateOptions (oldOptions, newOptions) {
-  for (var key in oldOptions) {
-    if (!(key in newOptions)) {
-      delete oldOptions[key]
-    }
-  }
-  for (var key$1 in newOptions) {
-    oldOptions[key$1] = newOptions[key$1]
-  }
-}
-
-exports.rerender = tryWrap(function (id, options) {
-  var record = map[id]
-  if (!options) {
-    record.instances.slice().forEach(function (instance) {
-      instance.$forceUpdate()
-    })
-    return
-  }
-  if (typeof options === 'function') {
-    options = options.options
-  }
-  if (record.Ctor) {
-    record.Ctor.options.render = options.render
-    record.Ctor.options.staticRenderFns = options.staticRenderFns
-    record.instances.slice().forEach(function (instance) {
-      instance.$options.render = options.render
-      instance.$options.staticRenderFns = options.staticRenderFns
-      // reset static trees
-      if (instance._staticTrees) {
-        // pre 2.5 staticTrees are cached per-instance
-        instance._staticTrees = []
-      } else {
-        // post 2.5 staticTrees are cached on shared options
-        record.Ctor.options._staticTrees = []
-      }
-      instance.$forceUpdate()
-    })
-  } else {
-    // functional or no instance created yet
-    record.options.render = options.render
-    record.options.staticRenderFns = options.staticRenderFns
-
-    // handle functional component re-render
-    if (record.options.functional) {
-      // rerender with full options
-      if (Object.keys(options).length > 2) {
-        updateOptions(record.options, options)
-      } else {
-        // template-only rerender.
-        // need to inject the style injection code for CSS modules
-        // to work properly.
-        var injectStyles = record.options._injectStyles
-        if (injectStyles) {
-          var render = options.render
-          record.options.render = function (h, ctx) {
-            injectStyles.call(ctx)
-            return render(h, ctx)
-          }
-        }
-      }
-      record.options._Ctor = null
-      record.options._staticTrees = []
-      record.instances.slice().forEach(function (instance) {
-        instance.$forceUpdate()
-      })
-    }
-  }
-})
-
-exports.reload = tryWrap(function (id, options) {
-  var record = map[id]
-  if (options) {
-    if (typeof options === 'function') {
-      options = options.options
-    }
-    makeOptionsHot(id, options)
-    if (record.Ctor) {
-      if (version[1] < 2) {
-        // preserve pre 2.2 behavior for global mixin handling
-        record.Ctor.extendOptions = options
-      }
-      var newCtor = record.Ctor.super.extend(options)
-      record.Ctor.options = newCtor.options
-      record.Ctor.cid = newCtor.cid
-      record.Ctor.prototype = newCtor.prototype
-      if (newCtor.release) {
-        // temporary global mixin strategy used in < 2.0.0-alpha.6
-        newCtor.release()
-      }
-    } else {
-      updateOptions(record.options, options)
-    }
-  }
-  record.instances.slice().forEach(function (instance) {
-    if (instance.$vnode && instance.$vnode.context) {
-      instance.$vnode.context.$forceUpdate()
-    } else {
-      console.warn(
-        'Root or manually mounted instance modified. Full reload required.'
-      )
-    }
-  })
-})
-
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(84);
+var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("b22004ac", content, false);
+var update = __webpack_require__(2)("03ff617c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f67ccf08\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./login.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f67ccf08\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./login.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-89cc1536\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./index.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-89cc1536\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./index.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -47968,7 +47713,7 @@ if(false) {
 }
 
 /***/ }),
-/* 84 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -47976,87 +47721,13 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.loginButton {\r\n\tbackground-color:#41b883;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #35495e;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#35495e;\r\n\tfont-family:Arial;\r\n\tfont-size:12px;\r\n\tpadding:6px 15px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.loginButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\n.registerButton {\r\n\tbackground-color:#35495e;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #18ab29;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#41b883;\r\n\tfont-family:Arial;\r\n\tfont-size:12px;\r\n\tpadding:6px 15px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.registerButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\n.backButton {\r\n\tbackground-color:#ffffff;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #000000;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#000000;\r\n\tfont-family:Arial;\r\n\tfont-size:12px;\r\n\tpadding:6px 15px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.backButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\ntable, th, td {\r\n    border: 1px solid black;\r\n    color: black;\n}\r\n", ""]);
+exports.push([module.i, "\n.loginButton {\r\n\tbackground-color:#41b883;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #18ab29;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#35495e;\r\n\tfont-family:Arial;\r\n\tfont-size:17px;\r\n\tpadding:16px 31px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.loginButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\n.registerButton {\r\n\tbackground-color:#35495e;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #18ab29;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#41b883;\r\n\tfont-family:Arial;\r\n\tfont-size:17px;\r\n\tpadding:16px 31px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.registerButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\r\n\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 85 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            title: 'Memory Game',
-            user: {
-                fullName: '',
-                nickName: '',
-                email: '',
-                password: '',
-                password_confirmation: ''
-            }
-        };
-    },
-
-    methods: {
-        resetUser: function resetUser() {
-            this.user = {
-                nickName: null,
-                password: null
-            };
-        },
-        login: function login(user) {
-            var _this = this;
-
-            axios.post('API.login', user).then(function (response) {
-                _this.resetUser();
-                var successMessage = response.data.message;
-                alert(successMessage);
-            }).catch(function (error) {
-                var data = error.response.data;
-                console.log(data);
-            });
-        }
-    },
-    components: {},
-    mounted: function mounted() {}
-});
-
-/***/ }),
-/* 86 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48072,78 +47743,13 @@ var render = function() {
       }
     }),
     _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("div", { attrs: { align: "center" } }, [
-      _c("table", [
-        _c("tr", [
-          _c("th", { class: _vm.$style.tabela }, [_vm._v("Nickname ")]),
-          _vm._v(" "),
-          _c("th", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.user.nickname,
-                  expression: "user.nickname"
-                }
-              ],
-              attrs: { type: "text", name: "nickName" },
-              domProps: { value: _vm.user.nickname },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.user, "nickname", $event.target.value)
-                }
-              }
-            })
-          ])
-        ]),
-        _c("tr", [
-          _c("th", { class: _vm.$style.tabela }, [_vm._v("Password")]),
-          _vm._v(" "),
-          _c("th", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.user.password,
-                  expression: "user.password"
-                }
-              ],
-              attrs: { type: "password", name: "password" },
-              domProps: { value: _vm.user.password },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.user, "password", $event.target.value)
-                }
-              }
-            })
-          ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
     _c(
       "div",
       { attrs: { align: "center" } },
       [
         _c(
-          "button",
-          { staticClass: "loginButton", attrs: { type: "button" } },
+          "router-link",
+          { staticClass: "loginButton", attrs: { to: { path: "/login" } } },
           [_vm._v("Login")]
         ),
         _vm._v(" "),
@@ -48151,18 +47757,10 @@ var render = function() {
           "router-link",
           {
             staticClass: "registerButton",
-            attrs: { to: { path: "/createUser" } }
+            attrs: { "color:": "", green: "", to: { path: "/createUser" } }
           },
           [_vm._v("Register User")]
-        ),
-        _vm._v(" "),
-        _c(
-          "router-link",
-          { staticClass: "backButton", attrs: { to: { path: "/" } } },
-          [_vm._v("Back")]
-        ),
-        _vm._v(" "),
-        _c("br")
+        )
       ],
       1
     )
@@ -48174,24 +47772,24 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f67ccf08", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-89cc1536", module.exports)
   }
 }
 
 /***/ }),
-/* 87 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(88)
+  __webpack_require__(85)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(90)
+var __vue_script__ = __webpack_require__(87)
 /* template */
-var __vue_template__ = __webpack_require__(91)
+var __vue_template__ = __webpack_require__(88)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -48231,13 +47829,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 88 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(89);
+var content = __webpack_require__(86);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -48257,7 +47855,7 @@ if(false) {
 }
 
 /***/ }),
-/* 89 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -48271,7 +47869,7 @@ exports.push([module.i, "\n.registerButton {\r\n\tbackground-color:#35495e;\r\n\
 
 
 /***/ }),
-/* 90 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48360,7 +47958,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         register: function register(user) {
             var _this = this;
 
-            axios.post('API.createUser', user).then(function (response) {
+            axios.post('/api/register', user).then(function (response) {
                 _this.resetUser();
                 var successMessage = response.data.message;
                 alert(successMessage);
@@ -48380,7 +47978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 91 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48673,34 +48271,30 @@ if (false) {
 }
 
 /***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
+/* WEBPACK VAR INJECTION */(function(module) {var disposed = false
+var cssModules = {}
+module.hot && module.hot.accept(["!!vue-style-loader!css-loader?{\"localIdentName\":\"[hash:base64]_1\",\"importLoaders\":true,\"modules\":true}!../../../../node_modules/vue-loader/lib/style-compiler/index?{\"vue\":true,\"id\":\"data-v-f67ccf08\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector?type=styles&index=1&bustCache!./login.vue"], function () {
+  var oldLocals = cssModules["$style"]
+  if (!oldLocals) return
+  var newLocals = __webpack_require__(13)
+  if (JSON.stringify(newLocals) === JSON.stringify(oldLocals)) return
+  cssModules["$style"] = newLocals
+  __webpack_require__(91).rerender("data-v-f67ccf08")
+})
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(104)
+  __webpack_require__(92)
+  cssModules["$style"] = __webpack_require__(13)
+Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(94)
 /* template */
-var __vue_template__ = __webpack_require__(107)
+var __vue_template__ = __webpack_require__(95)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -48717,7 +48311,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/index.vue"
+Component.options.__file = "resources/assets/js/components/login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -48727,37 +48321,282 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-89cc1536", Component.options)
+    hotAPI.createRecord("data-v-f67ccf08", Component.options)
   } else {
-    hotAPI.reload("data-v-89cc1536", Component.options)
+    if (module.hot.data.cssModules && Object.keys(module.hot.data.cssModules) !== Object.keys(cssModules)) {
+      delete Component.options._Ctor
+    }
+    hotAPI.reload("data-v-f67ccf08", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
+    data.cssModules = cssModules
     disposed = true
   })
 })()}
 
 module.exports = Component.exports
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
-/* 103 */,
-/* 104 */
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n._2ql-gHrunOPaadvRC7rpdO_1 {\r\n\tfont: 100 20px/1.2 'Merienda One', Helvetica, sans-serif;\r\n  \tcolor: rgba(0,0,0,0.7);\r\n  \ttext-shadow: 3px 3px 3px #fff;\n}\n._3rxVUj2BPN4SsGYa4-qXbm_1 {\r\n  font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;\r\n  color: rgba(0,0,0,0.7);\r\n  text-shadow: 3px 3px 3px #fff;\r\n  text-align: center;\n}\n._1Psbf8AUd2dSMMee53YNon_1 {\r\n  font-weight: bold;\n}\r\n", ""]);
+
+// exports
+exports.locals = {
+	"tabela": "_2ql-gHrunOPaadvRC7rpdO_1",
+	"red": "_3rxVUj2BPN4SsGYa4-qXbm_1",
+	"bold": "_1Psbf8AUd2dSMMee53YNon_1"
+};
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+var Vue // late bind
+var version
+var map = (window.__VUE_HOT_MAP__ = Object.create(null))
+var installed = false
+var isBrowserify = false
+var initHookName = 'beforeCreate'
+
+exports.install = function (vue, browserify) {
+  if (installed) { return }
+  installed = true
+
+  Vue = vue.__esModule ? vue.default : vue
+  version = Vue.version.split('.').map(Number)
+  isBrowserify = browserify
+
+  // compat with < 2.0.0-alpha.7
+  if (Vue.config._lifecycleHooks.indexOf('init') > -1) {
+    initHookName = 'init'
+  }
+
+  exports.compatible = version[0] >= 2
+  if (!exports.compatible) {
+    console.warn(
+      '[HMR] You are using a version of vue-hot-reload-api that is ' +
+        'only compatible with Vue.js core ^2.0.0.'
+    )
+    return
+  }
+}
+
+/**
+ * Create a record for a hot module, which keeps track of its constructor
+ * and instances
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+exports.createRecord = function (id, options) {
+  var Ctor = null
+  if (typeof options === 'function') {
+    Ctor = options
+    options = Ctor.options
+  }
+  makeOptionsHot(id, options)
+  map[id] = {
+    Ctor: Ctor,
+    options: options,
+    instances: []
+  }
+}
+
+/**
+ * Make a Component options object hot.
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+function makeOptionsHot(id, options) {
+  if (options.functional) {
+    var render = options.render
+    options.render = function (h, ctx) {
+      var instances = map[id].instances
+      if (instances.indexOf(ctx.parent) < 0) {
+        instances.push(ctx.parent)
+      }
+      return render(h, ctx)
+    }
+  } else {
+    injectHook(options, initHookName, function() {
+      var record = map[id]
+      if (!record.Ctor) {
+        record.Ctor = this.constructor
+      }
+      record.instances.push(this)
+    })
+    injectHook(options, 'beforeDestroy', function() {
+      var instances = map[id].instances
+      instances.splice(instances.indexOf(this), 1)
+    })
+  }
+}
+
+/**
+ * Inject a hook to a hot reloadable component so that
+ * we can keep track of it.
+ *
+ * @param {Object} options
+ * @param {String} name
+ * @param {Function} hook
+ */
+
+function injectHook(options, name, hook) {
+  var existing = options[name]
+  options[name] = existing
+    ? Array.isArray(existing) ? existing.concat(hook) : [existing, hook]
+    : [hook]
+}
+
+function tryWrap(fn) {
+  return function (id, arg) {
+    try {
+      fn(id, arg)
+    } catch (e) {
+      console.error(e)
+      console.warn(
+        'Something went wrong during Vue component hot-reload. Full reload required.'
+      )
+    }
+  }
+}
+
+function updateOptions (oldOptions, newOptions) {
+  for (var key in oldOptions) {
+    if (!(key in newOptions)) {
+      delete oldOptions[key]
+    }
+  }
+  for (var key$1 in newOptions) {
+    oldOptions[key$1] = newOptions[key$1]
+  }
+}
+
+exports.rerender = tryWrap(function (id, options) {
+  var record = map[id]
+  if (!options) {
+    record.instances.slice().forEach(function (instance) {
+      instance.$forceUpdate()
+    })
+    return
+  }
+  if (typeof options === 'function') {
+    options = options.options
+  }
+  if (record.Ctor) {
+    record.Ctor.options.render = options.render
+    record.Ctor.options.staticRenderFns = options.staticRenderFns
+    record.instances.slice().forEach(function (instance) {
+      instance.$options.render = options.render
+      instance.$options.staticRenderFns = options.staticRenderFns
+      // reset static trees
+      if (instance._staticTrees) {
+        // pre 2.5 staticTrees are cached per-instance
+        instance._staticTrees = []
+      } else {
+        // post 2.5 staticTrees are cached on shared options
+        record.Ctor.options._staticTrees = []
+      }
+      instance.$forceUpdate()
+    })
+  } else {
+    // functional or no instance created yet
+    record.options.render = options.render
+    record.options.staticRenderFns = options.staticRenderFns
+
+    // handle functional component re-render
+    if (record.options.functional) {
+      // rerender with full options
+      if (Object.keys(options).length > 2) {
+        updateOptions(record.options, options)
+      } else {
+        // template-only rerender.
+        // need to inject the style injection code for CSS modules
+        // to work properly.
+        var injectStyles = record.options._injectStyles
+        if (injectStyles) {
+          var render = options.render
+          record.options.render = function (h, ctx) {
+            injectStyles.call(ctx)
+            return render(h, ctx)
+          }
+        }
+      }
+      record.options._Ctor = null
+      record.options._staticTrees = []
+      record.instances.slice().forEach(function (instance) {
+        instance.$forceUpdate()
+      })
+    }
+  }
+})
+
+exports.reload = tryWrap(function (id, options) {
+  var record = map[id]
+  if (options) {
+    if (typeof options === 'function') {
+      options = options.options
+    }
+    makeOptionsHot(id, options)
+    if (record.Ctor) {
+      if (version[1] < 2) {
+        // preserve pre 2.2 behavior for global mixin handling
+        record.Ctor.extendOptions = options
+      }
+      var newCtor = record.Ctor.super.extend(options)
+      record.Ctor.options = newCtor.options
+      record.Ctor.cid = newCtor.cid
+      record.Ctor.prototype = newCtor.prototype
+      if (newCtor.release) {
+        // temporary global mixin strategy used in < 2.0.0-alpha.6
+        newCtor.release()
+      }
+    } else {
+      updateOptions(record.options, options)
+    }
+  }
+  record.instances.slice().forEach(function (instance) {
+    if (instance.$vnode && instance.$vnode.context) {
+      instance.$vnode.context.$forceUpdate()
+    } else {
+      console.warn(
+        'Root or manually mounted instance modified. Full reload required.'
+      )
+    }
+  })
+})
+
+
+/***/ }),
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(105);
+var content = __webpack_require__(93);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("03ff617c", content, false);
+var update = __webpack_require__(2)("b22004ac", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-89cc1536\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./index.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-89cc1536\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./index.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f67ccf08\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./login.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f67ccf08\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./login.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -48767,7 +48606,7 @@ if(false) {
 }
 
 /***/ }),
-/* 105 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -48775,14 +48614,80 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.loginButton {\r\n\tbackground-color:#41b883;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #18ab29;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#35495e;\r\n\tfont-family:Arial;\r\n\tfont-size:17px;\r\n\tpadding:16px 31px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.loginButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\n.registerButton {\r\n\tbackground-color:#35495e;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #18ab29;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#41b883;\r\n\tfont-family:Arial;\r\n\tfont-size:17px;\r\n\tpadding:16px 31px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.registerButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\r\n\r\n", ""]);
+exports.push([module.i, "\n.loginButton {\r\n\tbackground-color:#41b883;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #35495e;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#35495e;\r\n\tfont-family:Arial;\r\n\tfont-size:12px;\r\n\tpadding:6px 15px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.loginButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\n.registerButton {\r\n\tbackground-color:#35495e;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #18ab29;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#41b883;\r\n\tfont-family:Arial;\r\n\tfont-size:12px;\r\n\tpadding:6px 15px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.registerButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\n.backButton {\r\n\tbackground-color:#ffffff;\r\n\tborder-radius:28px;\r\n\tborder:1px solid #000000;\r\n\tdisplay:inline-block;\r\n\tcursor:pointer;\r\n\tcolor:#000000;\r\n\tfont-family:Arial;\r\n\tfont-size:12px;\r\n\tpadding:6px 15px;\r\n\ttext-decoration:none;\r\n\ttext-shadow:0px 1px 0px #2f6627;\n}\n.backButton:active {\r\n\tposition:relative;\r\n\ttop:1px;\n}\ntable, th, td {\r\n    border: 1px solid black;\r\n    color: black;\n}\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 106 */,
-/* 107 */
+/* 94 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            user: {
+                client_id: 2,
+                client_secret: 'Hu4OEZojQvN7S6ReYAj0RInhcHqcx94PAHp9QEPu',
+                grant_type: 'password',
+                username: '',
+                password: ''
+            }
+        };
+    },
+
+    methods: {
+        login: function login(user) {
+            var _this = this;
+
+            axios.post('/oauth/token', this.user).then(function (response) {
+                _this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now());
+                var successMessage = response.data.message;
+                alert(successMessage);
+            }).catch(function (error) {
+                var data = error.response.data;
+                console.log(data);
+            });
+        }
+    },
+    components: {},
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48798,13 +48703,82 @@ var render = function() {
       }
     }),
     _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("div", { attrs: { align: "center" } }, [
+      _c("table", [
+        _c("tr", [
+          _c("th", { class: _vm.$style.tabela }, [_vm._v("Nickname ")]),
+          _vm._v(" "),
+          _c("th", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.user.username,
+                  expression: "user.username"
+                }
+              ],
+              attrs: { type: "text", name: "nickName" },
+              domProps: { value: _vm.user.username },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.user, "username", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
+        _c("tr", [
+          _c("th", { class: _vm.$style.tabela }, [_vm._v("Password")]),
+          _vm._v(" "),
+          _c("th", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.user.password,
+                  expression: "user.password"
+                }
+              ],
+              attrs: { type: "password", name: "password" },
+              domProps: { value: _vm.user.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.user, "password", $event.target.value)
+                }
+              }
+            })
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
     _c(
       "div",
       { attrs: { align: "center" } },
       [
         _c(
-          "router-link",
-          { staticClass: "loginButton", attrs: { to: { path: "/login" } } },
+          "button",
+          {
+            staticClass: "loginButton",
+            attrs: { type: "button" },
+            on: { click: _vm.login }
+          },
           [_vm._v("Login")]
         ),
         _vm._v(" "),
@@ -48812,10 +48786,18 @@ var render = function() {
           "router-link",
           {
             staticClass: "registerButton",
-            attrs: { "color:": "", green: "", to: { path: "/createUser" } }
+            attrs: { to: { path: "/createUser" } }
           },
           [_vm._v("Register User")]
-        )
+        ),
+        _vm._v(" "),
+        _c(
+          "router-link",
+          { staticClass: "backButton", attrs: { to: { path: "/" } } },
+          [_vm._v("Back")]
+        ),
+        _vm._v(" "),
+        _c("br")
       ],
       1
     )
@@ -48827,9 +48809,58 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-89cc1536", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f67ccf08", module.exports)
   }
 }
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function (vue) {
+    var _this = this;
+
+    vue.auth = {
+        //set token
+        setToken: function setToken(token, expiration) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('expiration', expiration);
+        },
+        //get Token
+        getToken: function getToken() {},
+        //destroy token
+        //is authenticated
+        isAuthenticated: function isAuthenticated() {
+            if (_this.getToken()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+    Object.defineProperties(Vue.prototype, {
+        $auth: {
+            get: function get() {
+                return Vue.auth;
+            }
+        }
+    });
+});
 
 /***/ })
 /******/ ]);

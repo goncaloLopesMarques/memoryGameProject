@@ -12,9 +12,10 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import VueSocketio from 'vue-socket.io';
+import Auth from './components/auth.js';
 
 Vue.use(VueRouter);
-
+Vue.use(Auth);
 Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 //Vue.use(VueSocketio, 'http://192.168.10.1:8080');
 
