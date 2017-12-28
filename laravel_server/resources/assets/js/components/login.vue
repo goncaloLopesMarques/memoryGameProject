@@ -7,7 +7,7 @@
          <div align = "center">
             <table>
            <tr>
-             <th :class="$style.tabela">Nickname </th>
+             <th :class="$style.tabela">Email </th>
              <th><input type="text" name="nickName" v-model="user.username"></th>
             <tr>
              <th :class="$style.tabela">Password</th>
@@ -28,6 +28,9 @@
 </template>
 
 <script type="text/javascript">
+import VueRouter from 'vue-router'
+import{getHeader} from  '/home/vagrant/dad/memoryGameProject/laravel_server/resources/assets/js/vueapp.js'
+import Router from '/home/vagrant/dad/memoryGameProject/laravel_server/resources/assets/js/vueapp.js'
    export default {
         data() {
             return {
@@ -38,22 +41,38 @@
                     username:'',
 					password: '',
                 },
-            }
+			}
+			
         }, 
 		    methods: {	        
-			 login: function(user) {
+			login: function(user) {
+			var router = this.$router; 
+			let aux = this.user.username;
+			const authUser = {};
                 axios.post('/oauth/token', this.user)
-                    .then(response => {
-                        this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
-                        let successMessage = response.data.message
-                        alert(successMessage)
+                    .then(function(response){
+						console.log(response);
+						Vue.auth.setToken(response.data.access_token, response.data.expires_in + Date.now(),aux,response.data.refresh_token)
+						//obter os dados do utilizador logado
+						axios.get('/api/user', {headers: getHeader()})
+							.then(function(response){
+								Vue.auth.setAuthUser(response.data.id,response.data.fullName,response.data.nickName,response.data.email)
+								console.log(response)
+							})
+							.catch(function(error){
+								console.log(error)
+							})
+						//window.localStorage.setItem('authUser', JSON.stringify(authUser))
+						let successMessage = response.data.message
+						console.log(successMessage);
+						router.push("/mainPage");
+
                     })
-                     .catch(error => {
-                        let data = error.response.data
-						console.log(data); 	
+                     .catch(function(error){
+						 	console.log(error)
                     });
-	        }
-	    },
+	            } 
+	        },
 	    components: {
 	    	
 	    },

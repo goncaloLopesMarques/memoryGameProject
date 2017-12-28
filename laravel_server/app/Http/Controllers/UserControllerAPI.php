@@ -45,9 +45,9 @@ class UserControllerAPI extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-                'name' => 'required',
+                'fullName' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
-                'nickname' =>'required|unique:users',
+                'nickName' =>'required|unique:users',
             ]);
         $user = User::findOrFail($id);
         $user->update($request->all());
