@@ -1,11 +1,8 @@
 export default function(vue){
     Vue.auth = {
         //guardar o utilizador logado
-        setAuthUser(id,fullName,nickName,email){
+        setAuthUser(id){
             localStorage.setItem('id',id)
-            localStorage.setItem('fullName',fullName)
-            localStorage.setItem('nickName', nickName)
-            localStorage.setItem('email', email)
         },
         //set token
         setToken(token, expiration,username, refresh_token){

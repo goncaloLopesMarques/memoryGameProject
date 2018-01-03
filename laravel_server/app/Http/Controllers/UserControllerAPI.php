@@ -14,6 +14,10 @@ use Hash;
 
 class UserControllerAPI extends Controller
 {
+    public function showUser($id){
+        return response()->json(User::find($id));
+    }
+
     public function getUsers(Request $request)
     {
         if ($request->has('page')) {
@@ -46,12 +50,12 @@ class UserControllerAPI extends Controller
     {
         $request->validate([
                 'fullName' => 'required',
-                'email' => 'required|email|unique:users,email,'.$id,
+                'email' => 'required|email|unique:users,email',
                 'nickName' =>'required|unique:users',
             ]);
         $user = User::findOrFail($id);
         $user->update($request->all());
-        return new UserResource($user);
+        return response()->json($user);
     }
 
     public function delete($id)

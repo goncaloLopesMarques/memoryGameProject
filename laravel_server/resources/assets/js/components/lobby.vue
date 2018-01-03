@@ -3,7 +3,7 @@
 	    <thead>
 	        <tr>
 	            <th>ID</th>
-	            <th>Player 1</th>
+	            <th>{{ user.nickName }}</th>
 	            <th>Actions</th>
 	        </tr>
 	    </thead>
@@ -22,7 +22,7 @@
 <script type="text/javascript">
 	// Component code (not registered)
 	module.exports={
-		props: ['games'],
+		props: ['games', 'user'],
         methods: {
             join(game) {
             	this.$emit('join-click', game);

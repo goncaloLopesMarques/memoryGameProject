@@ -56,7 +56,7 @@ import Router from '/home/vagrant/dad/memoryGameProject/laravel_server/resources
 						//obter os dados do utilizador logado
 						axios.get('/api/user', {headers: getHeader()})
 							.then(function(response){
-								Vue.auth.setAuthUser(response.data.id,response.data.fullName,response.data.nickName,response.data.email)
+								Vue.auth.setAuthUser(response.data.id)
 								console.log(response)
 							})
 							.catch(function(error){

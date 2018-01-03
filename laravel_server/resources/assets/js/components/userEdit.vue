@@ -39,7 +39,7 @@
 		props: ['user'],
 	    methods: {
 	        saveUser: function(){
-	            axios.put('api/users/'+this.user.id, this.user)
+	            axios.put('api/user/'+this.user.id, this.user)
 	                .then(response=>{
 	                	// Copy object properties from response.data.data to this.user
 	                	// without creating a new reference
@@ -48,7 +48,7 @@
 	                });
 	        },
 	        cancelEdit: function(){
-	        	axios.get('api/users/'+this.user.id)
+	        	axios.get('api/user/'+this.user.id)
 	                .then(response=>{
 	                	// Copy object properties from response.data.data to this.user
 	                	// without creating a new reference

@@ -19,6 +19,7 @@
         "vue": "^2.1.10"
     },
     "dependencies": {
+        "sweetalert": "^2.1.0",
         "vue-router": "^3.0.1",
         "vue-socket.io": "^2.1.1-a"
     }

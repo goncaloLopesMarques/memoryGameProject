@@ -49,7 +49,9 @@
 </template>
 
 <script type="text/javascript">
+  import swal from 'sweetalert'; 
     export default {
+ 
         data() {
             return {
                 user: {
@@ -69,6 +71,7 @@
             }
         },
 	    methods: {
+            
              resetUser() {
                     this.user = {
                     fullName: null,
@@ -79,11 +82,13 @@
                 }
             },
 	        register(user) {
+                var router = this.$router;
                 axios.post('/api/register', user)
                     .then(response => {
                         this.resetUser()
                         let successMessage = response.data.message
-                        alert(successMessage)
+                        swal("Success", "Utilizador editado com sucesso", "success");
+                        router.push("/index");
                     })
                      .catch(error => {
                         let data = error.response.data

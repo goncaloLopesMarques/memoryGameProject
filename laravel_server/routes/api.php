@@ -16,13 +16,19 @@ use Illuminate\Contracts\Support\Jsonable;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::get('user/{id}', function($id){
+   return User::findOrFail($id);
+});
 Route::get('users', 'UserControllerAPI@getUsers');
+//edite USer
+Route::get('/user/{id}','UserControllerAPI@showUser');
+Route::put('/user/{id}', 'UserControllerAPI@update');
+//
 Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
 Route::get('users/{id}', 'UserControllerAPI@getUser');
 Route::post('users', 'UserControllerAPI@store');
 Route::post('/register','Auth\RegisterController@create');
-Route::put('users/{id}', 'UserControllerAPI@update');
+//Route::put('users/{id}', 'UserControllerAPI@update');
 Route::delete('users/{id}', 'UserControllerAPI@delete');
  
 Route::get('games', 'GameControllerAPI@index');
