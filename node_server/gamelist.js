@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-var TicTacToeGame = require('./gamemodel.js');
+var memoryGame = require('./gamemodel.js');
 
 class GameList {
 	constructor() {
@@ -14,12 +14,15 @@ class GameList {
     }
 
     createGame(playerName, socketID) {
-    	this.contadorID = this.contadorID+1;
-    	var game = new TicTacToeGame(this.contadorID, playerName);
-    	game.player1SocketID = socketID;
+		this.contadorID = this.contadorID+1;
+		var game = new memoryGame(this.contadorID, playerName);
+		game.player1SocketID = socketID;
     	this.games.set(game.gameID, game);
     	return game;
-    }
+	}
+	startGame(game){
+		game.boardGenarator();
+	}
 
     joinGame(gameID, playerName, socketID) {
     	let game = this.gameByID(gameID);
@@ -32,26 +35,21 @@ class GameList {
     }
 
     removeGame(gameID, socketID) {
-    	let game = this.gameByID(gameID);
+		let game = this.gameByID(gameID);
     	if (game===null) {
     		return null;
-    	}
-    	if (game.player1SocketID == socketID) {
-    		game.player1SocketID = "";
-    	} else if (game.player2SocketID == socketID) {
-    		game.player2SocketID = "";
-    	} 
-    	if ((game.player1SocketID === "") && (game.player2SocketID === "")) {
-    		this.games.delete(gameID);
-    	}
+    	}else{
+			this.games.delete(gameID);
+			this.contadorID --;
+		}
     	return game;
     }
 
     getConnectedGamesOf(socketID) {
-    	let games = [];
+		let games = [];
     	for (var [key, value] of this.games) {
     		if ((value.player1SocketID == socketID) || (value.player2SocketID == socketID)) {
-    			games.push(value);
+				games.push(value);
     		}
 		}
 		return games;

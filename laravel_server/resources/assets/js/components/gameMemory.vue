@@ -3,6 +3,9 @@
         <div>
             <h2 class="text-center">Game {{game.gameID}}</h2>
             <br>
+            <div  align="center">
+            <button class=".btn-success" v-on:click.prevent="startGame">StartGame</button>
+            </div>
         </div>
         <div class="game-zone-content">       
             <div class="alert" :class="alerttype">
@@ -89,6 +92,9 @@
            
         },
         methods: {
+            startGame(){
+                this.$parent.startGame(this.game);
+            },
             closeGame (){
                 // Click to close game
                 this.$parent.close(this.game);

@@ -26,7 +26,14 @@
         methods: {
             join(game) {
             	this.$emit('join-click', game);
-            },		
+			},
+		/*	remove(game){
+				if(game.player1 != this.user.nickName){
+					swal("Error", "Cannot delete another person game", "error");
+				}else{
+					this.$socket.emit('remove_game',game.gameID);
+				}
+			},*/			
         },		
 	}
 </script>

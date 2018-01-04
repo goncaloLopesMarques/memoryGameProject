@@ -25,22 +25,28 @@
 		<tr>
 			<td>
 				<p>
-					
+
 				</p>
 			</td>
 		</tr>
         <tr>
-          <td><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></td>
+          <td><button class="logOut" v-on:click.prevent="createGame">Create a New Game</button></td>
 		</tr>
 	  </table>
 	
 	</div>
 
 	<div align="center">
-     <h2>Lobby</h2>
+		<table>
+			<td class="big"> Lobby</td>
+			<td><button class="edit" v-on:click.prevent="hide">Hide/Show</button></td>
+		</table>
 	</div>
 		<div>
-		<lobby :games="lobbyGames" :user = "this.user" @join-click="join"></lobby>
+		<lobby :games="lobbyGames" :user = "this.user" @join-click="join" @remove-click="remove" v-if="hideShow"></lobby>
+		<template v-for="game in activeGames">
+                <game :game="game"></game>
+            </template>
 	</div>
 	</div>
     			
@@ -49,11 +55,13 @@
    import UserEdit from './userEdit.vue';
    import lobby from './lobby.vue' 
    import swal from 'sweetalert'; 
+   import memoryGame from './gameMemory.vue'
    export default {	 
 		   
 		components: {
 		 'user-edit': UserEdit,
-		 'lobby' :	lobby
+		 'lobby' :	lobby,
+		 'game' : memoryGame
 		},
 		  
         data() {
@@ -64,11 +72,66 @@
 				nickName:'',	
 				email:'',
 				},	
+				currentPlayer: this.user,
 				currentUser: null,
 				//lobby
-				lobbyGames: []
+				hideShow: true,
+				socketId: "",
+				lobbyGames: [],
+				activeGames: []
 			}
 		}, 
+		sockets:{
+			
+            connect(){
+                console.log('socket connected');
+                this.socketId = this.$socket.id;
+            },
+            discconnect(){
+                console.log('socket disconnected');
+                this.socketId = "";
+            },
+            lobby_changed(){
+                // For this to work, websocket server must emit a message
+                // named "lobby_changed"
+                this.loadLobby();
+            },
+            my_active_games_changed(){
+                this.loadActiveGames();
+            },
+            my_active_games(games){
+                this.activeGames = games;
+            },
+            my_lobby_games(games){
+                this.lobbyGames = games;
+            },
+            game_changed(game){
+                for(var lobbyGame of this.lobbyGames){
+                    if(game.gameID == lobbyGame.gameID){
+                        Object.assign(lobbyGame,game);
+                        break;
+                    }
+                }
+                for(var activeGame of this.activeGames){
+                    if(game.gameID == activeGame.gameID){
+                        Object.assign(activeGame,game);
+                        break;
+                    }
+                }
+			},
+			invalid_play(errorObject){
+                if(errorObject.type == 'Invalid_game'){
+                    alert("error: Game does not exist on server");
+                }else if(errorObject.type == 'Invalid_Player'){
+                    alert("Error: Player not valid for this game");
+                }else if(errorObject.type == 'Invalid_Play'){
+                    alert("Error: This play aint valid ot not your turn");
+                }else{
+                    alert("Error: "+errorObject.type);
+                }
+
+			}
+		},
 		
 		    methods: {
 			 getUser: function(){
@@ -106,23 +169,69 @@
                  Vue.auth.destroyToken();
                 this.$router.push("/index");
 			 },
-			 	//lobby methods
+				 //lobby methods
+			 loadLobby(){
+              /// send message to server to load the list of games on the lobby
+              this.$socket.emit('get_my_loby_games');
+			 },
+			 loadActiveGames(){
+                /// send message to server to load the list of games that player is playing
+                this.$socket.emit('get_my_activegames');
+			},
+			remove(){
+				if(game.player1 != this.user.nickName){
+					swal("Error", "Cannot delete another person game", "error");
+				}else{
+					this.$socket.emit('remove_game');
+				}
+			},
+			hide: function(){
+				if(this.hideShow == true){
+					this.hideShow = null;
+				}else{
+					this.hideShow = true;
+				}
+
+			},
+			startGame(){
+                if (this.user == null) {
+                  alert('Current Player is Empty - Cannot Create a Game');
+                  return;
+                }else{
+					console.log(activeGames)
+				  this.$socket.emit('start_game', { game: this.game });
+				}
+			},
+			createGame(){
+                // For this to work, server must handle (on event) the "create_game" message
+                if (this.user == null) {
+                    alert('Current Player is Empty - Cannot Create a Game');
+                    return;
+                }
+                else {
+					this.$socket.emit('create_game', { playerName: this.user.nickName });
+                }
+            },
 			 join: function(game){
-                if(game.player1 == this.currentPlayer){
-                    alert('Cannot join because its your game');
+                if(game.player1 == this.user.nickName){
+                    swal("Error", "Cannot join your own game", "error");
                     return;
                 }
                 this.$socket.emit('join_game',{
                      gameID: game.gameID,
-                     playerName: this.currentPlayer
+                     playerName: this.user.nickName
                 });
+			},
+			close(game){
+              this.$socket.emit('remove_game',{
+				  gameID: game.gameID
+              });
             }    
 			 
-		},
-		
-			
+		},		
 	   mounted() {
 			this.getUser();
+			this.loadLobby();
 		}
 
 

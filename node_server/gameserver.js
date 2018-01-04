@@ -19,7 +19,7 @@ var app = require('http').createServer();
 
 var io = require('socket.io')(app);
 
-var TicTacToeGame = require('./gamemodel.js');
+var memoryGame = require('./gamemodel.js');
 var GameList = require('./gamelist.js');
 
 app.listen(8080, function(){
@@ -36,14 +36,25 @@ io.on('connection', function (socket) {
     console.log('client has connected');
 
     socket.on('create_game', function (data){
-    	console.log('A new game is about to be created');
-    	let game = games.createGame(data.playerName, socket.id);
+		console.log('A new game is about to be created');
+		let game = games.createGame(data.playerName, socket.id);
     	// Use socket channels/rooms
 		socket.join(game.gameID);
 		// Notification to the client that created the game
 		socket.emit('my_active_games_changed');
 		// Notification to all clients
 		io.emit('lobby_changed');
+	});
+	socket.on('start_game', function (data){
+		console.log('A new game is about to be started');
+		console.log(data)
+		//let game = games.startGame(data.playerName, socket.id);
+    	// Use socket channels/rooms
+		//socket.join(game.gameID);
+		// Notification to the client that created the game
+		//socket.emit('my_active_games_changed');
+		// Notification to all clients
+		//io.emit('lobby_changed');
 	});
 
 	socket.on('play',function(data){
@@ -83,7 +94,10 @@ io.on('connection', function (socket) {
 	})
 	
 	socket.on('remove_game',function(data){
-		let game = games.removeGame(data.gameID,socket.id);
+		if(games.removeGame(data.gameID,socket.id)){
+		   console.log("Game deleted successfully!")	
+		}
+		
 		socket.emit('my_active_games_changed');
 		io.emit('lobby_changed');
 	  });
