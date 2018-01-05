@@ -47436,7 +47436,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\n.gameseparator[data-v-3d129664]{\n    border-style: solid;\n    border-width: 2px 0 0 0;\n    border-color: black;\n}\n", ""]);
+exports.push([module.i, "\n.gameseparator[data-v-3d129664]{\r\n    border-style: solid;\r\n    border-width: 2px 0 0 0;\r\n    border-color: black;\n}\r\n", ""]);
 
 // exports
 
@@ -48744,7 +48744,7 @@ exports.push([module.i, "\n.loginButton {\r\n\tbackground-color:#41b883;\r\n\tbo
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_vagrant_dad_memoryGameProject_laravel_server_resources_assets_js_vueapp_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vueapp_js__ = __webpack_require__(4);
 //
 //
 //
@@ -48783,7 +48783,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			user: {
 				client_id: 2,
-				client_secret: 'Hu4OEZojQvN7S6ReYAj0RInhcHqcx94PAHp9QEPu',
+				client_secret: 'CwX66Z9xWyvQPMV45pA3vqy4G9MzI72oQi5J2mvv',
 				grant_type: 'password',
 				username: '',
 				password: ''
@@ -48800,7 +48800,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				console.log(response);
 				Vue.auth.setToken(response.data.access_token, response.data.expires_in + Date.now(), aux, response.data.refresh_token);
 				//obter os dados do utilizador logado
-				axios.get('/api/user', { headers: Object(__WEBPACK_IMPORTED_MODULE_1__home_vagrant_dad_memoryGameProject_laravel_server_resources_assets_js_vueapp_js__["getHeader"])() }).then(function (response) {
+				axios.get('/api/user', { headers: Object(__WEBPACK_IMPORTED_MODULE_1__vueapp_js__["getHeader"])() }).then(function (response) {
 					Vue.auth.setAuthUser(response.data.id);
 					console.log(response);
 				}).catch(function (error) {

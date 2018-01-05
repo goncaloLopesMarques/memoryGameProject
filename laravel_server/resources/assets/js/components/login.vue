@@ -29,14 +29,14 @@
 
 <script type="text/javascript">
 import VueRouter from 'vue-router'
-import{getHeader} from  '/home/vagrant/dad/memoryGameProject/laravel_server/resources/assets/js/vueapp.js'
-import Router from '/home/vagrant/dad/memoryGameProject/laravel_server/resources/assets/js/vueapp.js'
+import{getHeader} from  '../vueapp.js'
+import Router from '../vueapp.js'
    export default {
         data() {
             return {
                 user: {
 					client_id: 2,
-					client_secret: 'Hu4OEZojQvN7S6ReYAj0RInhcHqcx94PAHp9QEPu',
+					client_secret: 'CwX66Z9xWyvQPMV45pA3vqy4G9MzI72oQi5J2mvv',
 					grant_type: 'password',
                     username:'',
 					password: '',
