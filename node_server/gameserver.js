@@ -47,14 +47,12 @@ io.on('connection', function (socket) {
 	});
 	socket.on('start_game', function (data){
 		console.log('A new game is about to be started');
-		console.log(data)
-		//let game = games.startGame(data.playerName, socket.id);
-    	// Use socket channels/rooms
-		//socket.join(game.gameID);
+		let game = games.startGame(data.game.gameID, data.game.numberOfPlayers ,data.linhas, data.colunas)
+		// Use socket channels/rooms
 		// Notification to the client that created the game
-		//socket.emit('my_active_games_changed');
-		// Notification to all clients
-		//io.emit('lobby_changed');
+	
+		io.to(game.gameID).emit('my_active_games_changed');
+		io.emit('lobby_changed');
 	});
 
 	socket.on('play',function(data){
@@ -92,9 +90,18 @@ io.on('connection', function (socket) {
 
 
 	})
+	socket.on('join_game',function(data){
+		let game = games.joinGame(data.gameID, data.playerName, socket.id);
+		socket.join(game.gameID);
+		console.log("player joined")
+		io.to(game.gameID).emit('player_joined', data.playerName);
+		io.to(game.gameID).emit('my_active_games_changed');
+		io.emit('lobby_changed');
+	})
 	
 	socket.on('remove_game',function(data){
-		if(games.removeGame(data.gameID,socket.id)){
+		console.log(data)
+		if(games.removeGame(data,socket.id)){
 		   console.log("Game deleted successfully!")	
 		}
 		
@@ -102,12 +109,7 @@ io.on('connection', function (socket) {
 		io.emit('lobby_changed');
 	  });
 
-	socket.on('join_game',function(data){
-		let game = games.joinGame(data.gameID, data.playerName, socket.id);
-		socket.join(game.gameID);
-		io.to(game.gameID).emit('my_active_games_changed');
-		io.emit('lobby_changed');
-	})
+
     socket.on('get_my_activegames', function (){
 		var my_games = games.getConnectedGamesOf(socket.id);
 		socket.emit('my_active_games',my_games);

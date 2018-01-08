@@ -1,42 +1,33 @@
 /*jshint esversion: 6 */
+var boardList = require('./boardList.js');
 
 class memoryGame {
-    constructor(ID, player1Name) {
+    constructor(ID) {
         this.gameID = ID;
-        this.splayer1SocketID = '',
+        // 0 = single Player, 1 = Multiplayer
+        this.type ='',
+        this.linhas = 4,
+        this.colunas = 4,
         this.gamePlayers = [],
-        this.gamePlayers[0] = player1Name,
-        this.numberOfPlayers = 1,
+        this.numberOfPlayers = 0,
         this.gameEnded = false;
         this.gameStarted = false;
-        this.player1= player1Name;
         this.playerTurn = 1;
         this.winner = 0;
         this.board = [];
     }
 
-    join(playerName){
+    join(player){
         if(this.gamePlayers.length> 4){
             console.log("numero maximo de utilizadores")
         }else{
-            this.gamePlayers[this.numberOfPlayers] = playerName;
+            this.gamePlayers[this.numberOfPlayers] = player;
             this.numberOfPlayers ++;
-        }
-        if(this.numberOfPlayers>1){
-            this.gameStarted = true;
-        }
-        
+        }       
     }
-
-    hasRow(value){
-        return  ((this.board[0]==value) && (this.board[1]==value) && (this.board[2]==value)) || 
-                ((this.board[3]==value) && (this.board[4]==value) && (this.board[5]==value)) || 
-                ((this.board[6]==value) && (this.board[7]==value) && (this.board[8]==value)) || 
-                ((this.board[0]==value) && (this.board[3]==value) && (this.board[6]==value)) || 
-                ((this.board[1]==value) && (this.board[4]==value) && (this.board[7]==value)) || 
-                ((this.board[2]==value) && (this.board[5]==value) && (this.board[8]==value)) || 
-                ((this.board[0]==value) && (this.board[4]==value) && (this.board[8]==value)) || 
-                ((this.board[2]==value) && (this.board[4]==value) && (this.board[6]==value));
+    setPlayer(player){
+        this.gamePlayers[this.numberOfPlayers] = player;
+        this.numberOfPlayers++;
     }  
 
     checkGameEnded(){
@@ -64,27 +55,75 @@ class memoryGame {
         }
         return true;
     }
-    boardGenerator(){
+    boardGenerator(linhas, colunas){
+        var aux =linhas + colunas
+        var boardAux =[]
+        var boardAux1 = [];
+        var boardAux2 = [];
         if(this.numberOfPlayers < 1){
             console.log("Não ha players para jogar")
-        }else if(this.numberOfPlayers == 1 || this.numberOfPlayers ==2){
-            // tabuleiro 4X4
-            // criamos primeiro uma board com metade do comprimento com numeros aliatorios depois é so criar outro igual
-            //criar o primeiro
-            //depois junta-se o primeiro com a sua copia
-            //por ultimo misturamos tudo com o shuffle
-            var boardAux=[];
-            var boardAux1 = [];
-            var boardAux2 = [];
-            var i = 0;
-            for (i = 0; i < 9; i++) { 
-                boardAux1[i] = Math.floor(Math.random() * 42);
-                boardAux2[i] = boardAux1[i];
+            return
+        }
+        if( aux % 2 !== 0){
+            console.log("linhas nao são par")
+            return
+        }
+        if(linhas*colunas >80){
+            console.log("não ha pares suficientes para este tamanho de tabuleiro")
+            return
+        }
+        var gameBoard=[];
+        for(var i =0; i<41; i++){
+            gameBoard[i]=i;
+        }
+
+        if(this.numberOfPlayers == 1 || this.numberOfPlayers ==2){
+
+            gameBoard = this.shuffle(gameBoard)        
+            //este for preenche a board que fica do lado do servidor
+            for(var i=0; i< (linhas * colunas)/2; i++){
+                boardAux[i] = gameBoard[i];
             }
-            var boardAux = boardAux1.concat(boardAux2);
-            this.board = this.shuffle(boardAux);
+         //este for preenche a board que vai ser enviada para o utilizador
+         for(var i=0; i< (linhas * colunas); i++){
+             this.board[i] = "hidden"
+         }
+         //inicialização de variaveis e preenchimento das boards
+            var boardListAux = new boardList();
+            boardListAux.createBoard(this.gameID,boardAux.concat(boardAux));
+            this.gameStarted = true
+            this.linhas = linhas
+            this.colunas = colunas
+
         }else if(this.numberOfPlayers == 3){
-            // 4X6
+            if(linhas >=4 && colunas >=6){
+                var boardAux=[];
+                var boardAux1 = [];
+                var boardAux2 = [];
+
+                boardAux1= this.shuffle(boardAux)
+                boardAux2 = boardAux1
+                var boardAux = boardAux1.concat(boardAux2);
+                this.board = boardAux2;
+                this.linhas = linhas
+                this.colunas = colunas
+                this.gameStarted = true 
+            }else{
+                var boardAux=[];
+                var boardAux1 = [];
+                var boardAux2 = [];
+                var i = 0;
+                for (i = 0; i < 32; i++) { 
+                    boardAux1[i] = Math.floor(Math.random() * 42);
+                    boardAux2[i] = boardAux1[i];
+                }
+
+                var boardAux = boardAux1.concat(boardAux2);
+                this.board = this.shuffle(boardAux);
+                this.linhas = linhas
+                this.colunas = colunas
+                this.gameStarted = true 
+            }
         }else{
             //6X6
         }

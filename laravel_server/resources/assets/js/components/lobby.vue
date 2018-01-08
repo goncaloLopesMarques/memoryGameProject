@@ -25,7 +25,8 @@
 		props: ['games', 'user'],
         methods: {
             join(game) {
-            	this.$emit('join-click', game);
+            	this.$emit('join-click',{gameID: game.gameID,
+                     playerName: this.user.nickName});
 			},
 		/*	remove(game){
 				if(game.player1 != this.user.nickName){

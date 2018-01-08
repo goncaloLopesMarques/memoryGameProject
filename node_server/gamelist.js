@@ -1,10 +1,12 @@
 /*jshint esversion: 6 */
 
 var memoryGame = require('./gamemodel.js');
+var player     = require('./playermodel.js')
 
 class GameList {
 	constructor() {
-        this.contadorID = 0;
+		this.contadorID = 0;
+		this.playerContador=0;
         this.games = new Map();
     }
 
@@ -13,24 +15,44 @@ class GameList {
     	return game;
     }
 
-    createGame(playerName, socketID) {
+    createGame(playerName, socketID, linhas, colunas) {
+		this.playerContador =0;
+		var playerAux = new player(playerName);
+		this.playerContador = this.playerContador+1;
+		playerAux.setPlayerSocketID(socketID);
+		playerAux.setID(this.playerContador);
+		
 		this.contadorID = this.contadorID+1;
-		var game = new memoryGame(this.contadorID, playerName);
-		game.player1SocketID = socketID;
+		var game = new memoryGame(this.contadorID);
+		game.setPlayer(playerAux);
+
     	this.games.set(game.gameID, game);
     	return game;
 	}
-	startGame(game){
-		game.boardGenarator();
+	startGame(gameID, numberOfPlayers ,linhas, colunas){
+		let game = this.gameByID(gameID);
+		game.boardGenerator(linhas,colunas);
+		if(numberOfPlayers==1){
+			game.type = 0
+		}else{
+			game.type=1
+		}
+		console.log(game)
+		return game
 	}
 
     joinGame(gameID, playerName, socketID) {
     	let game = this.gameByID(gameID);
     	if (game===null) {
     		return null;
-    	}
-    	game.join(playerName);
-    	game.player2SocketID = socketID;
+		}
+
+		var playerAux = new player(playerName);
+		this.playerContador = this.playerContador+1;
+		playerAux.setPlayerSocketID(socketID);
+		playerAux.setID(this.playerContador);
+
+    	game.join(playerAux);
     	return game;
     }
 
@@ -46,11 +68,12 @@ class GameList {
     }
 
     getConnectedGamesOf(socketID) {
+		//FUNÇAO ESTATICA TENTAR POR A VALIDAÇÂO DINAMICA!!!
 		let games = [];
     	for (var [key, value] of this.games) {
-    		if ((value.player1SocketID == socketID) || (value.player2SocketID == socketID)) {
-				games.push(value);
-    		}
+			 	  if ((value.gamePlayers[0].playerSocketID == socketID)||(value.gamePlayers[1].playerSocketID == socketID)) {
+						games.push(value);
+				}	
 		}
 		return games;
     }
@@ -59,9 +82,11 @@ class GameList {
     	let games = [];
     	for (var [key, value] of this.games) {
     		if ((!value.gameStarted) && (!value.gameEnded))  {
-    			if ((value.player1SocketID != socketID) && (value.player2SocketID != socketID)) {
-    				games.push(value);
-    			}
+				for(var i = 0 ; i < value.numberOfPlayers; i++){
+					if ((value.gamePlayers[i].playerSocketID != socketID)) {
+						games.push(value);
+					}
+				}
     		}
 		}
 		return games;

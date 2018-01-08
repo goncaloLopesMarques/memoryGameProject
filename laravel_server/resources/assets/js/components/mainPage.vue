@@ -44,9 +44,12 @@
 	</div>
 		<div>
 		<lobby :games="lobbyGames" :user = "this.user" @join-click="join" @remove-click="remove" v-if="hideShow"></lobby>
-		<template v-for="game in activeGames">
-                <game :game="game"></game>
+
+		<template  v-for="game in activeGames">
+                <game :user = "this.user" :game="game"></game>
             </template>
+
+
 	</div>
 	</div>
     			
@@ -97,7 +100,16 @@
                 this.loadLobby();
             },
             my_active_games_changed(){
-                this.loadActiveGames();
+				this.loadActiveGames();
+			},
+			player_joined(playername){
+				
+				if(this.user.nickName == playername){
+					swal("Success", playername+" successfully joined to the game", "success");
+				}else{
+				swal("Success", "The player: "+playername+" has joined to the game", "success");	
+				}
+				
             },
             my_active_games(games){
                 this.activeGames = games;
@@ -176,13 +188,13 @@
 			 },
 			 loadActiveGames(){
                 /// send message to server to load the list of games that player is playing
-                this.$socket.emit('get_my_activegames');
+				this.$socket.emit('get_my_activegames');
 			},
-			remove(){
-				if(game.player1 != this.user.nickName){
+			remove(game){
+				if(game.gamePlayers[0].name != this.user.nickName){
 					swal("Error", "Cannot delete another person game", "error");
 				}else{
-					this.$socket.emit('remove_game');
+					this.$socket.emit('remove_game', game.gameID);
 				}
 			},
 			hide: function(){
@@ -193,13 +205,12 @@
 				}
 
 			},
-			startGame(){
+			startGame(game,linhas,colunas){
                 if (this.user == null) {
                   alert('Current Player is Empty - Cannot Create a Game');
                   return;
                 }else{
-					console.log(activeGames)
-				  this.$socket.emit('start_game', { game: this.game });
+				  this.$socket.emit('start_game', { game: game, linhas: linhas, colunas: colunas});
 				}
 			},
 			createGame(){
@@ -221,12 +232,7 @@
                      gameID: game.gameID,
                      playerName: this.user.nickName
                 });
-			},
-			close(game){
-              this.$socket.emit('remove_game',{
-				  gameID: game.gameID
-              });
-            }    
+			},  
 			 
 		},		
 	   mounted() {

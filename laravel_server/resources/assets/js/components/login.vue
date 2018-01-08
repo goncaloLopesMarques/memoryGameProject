@@ -29,8 +29,8 @@
 
 <script type="text/javascript">
 import VueRouter from 'vue-router'
-import{getHeader} from  '/home/vagrant/dad/memoryGameProject/laravel_server/resources/assets/js/vueapp.js'
-import Router from '/home/vagrant/dad/memoryGameProject/laravel_server/resources/assets/js/vueapp.js'
+import{getHeader} from  '../vueapp.js'
+import Router from '../vueapp.js'
    export default {
         data() {
             return {
