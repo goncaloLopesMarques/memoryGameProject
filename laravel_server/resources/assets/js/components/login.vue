@@ -36,7 +36,7 @@ import Router from '../vueapp.js'
             return {
                 user: {
 					client_id: 2,
-					client_secret: 'Hu4OEZojQvN7S6ReYAj0RInhcHqcx94PAHp9QEPu',
+					client_secret: 'CwX66Z9xWyvQPMV45pA3vqy4G9MzI72oQi5J2mvv',
 					grant_type: 'password',
                     username:'',
 					password: '',
