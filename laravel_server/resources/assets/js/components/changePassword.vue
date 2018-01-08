@@ -44,7 +44,7 @@ import {getHeader} from  '../vueapp.js'
                 axios.get('api/user/'+localStorage.getItem("id"))
                     .then(response=>{
                         console.log(response);
-                        var newPassword = bcrypt(this.user.password);
+                        var newPassword = this.user.password;
                         var oldPassword = response.data.password;
                         var inputOldPassword = this.user.oldPassword;
                         if (inputOldPassword==oldPassword) {
