@@ -69,7 +69,7 @@
 	color:#41b883;
 	font-size:30px;
 	}
-	.cancel{
+.cancel{
     background-color:#35495e;
 	-moz-border-radius:28px;
 	-webkit-border-radius:28px;

@@ -58,6 +58,16 @@ class UserControllerAPI extends Controller
         return response()->json($user);
     }
 
+    public function changePassword(Request $request, $id)
+    {
+        $request->validate([
+                'password' => 'required',
+            ]);
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json($user);
+    }
+
     public function delete($id)
     {
         $user = User::findOrFail($id);

@@ -23,6 +23,7 @@ Route::get('users', 'UserControllerAPI@getUsers');
 //edite USer
 Route::get('/user/{id}','UserControllerAPI@showUser');
 Route::put('/user/{id}', 'UserControllerAPI@update');
+Route::put('/user/changePassword/{id}', 'UserControllerAPI@changePassword');
 //
 Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
 Route::get('users/{id}', 'UserControllerAPI@getUser');

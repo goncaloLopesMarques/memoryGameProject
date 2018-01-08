@@ -368,6 +368,115 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -677,115 +786,6 @@ module.exports = {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -833,15 +833,22 @@ var index = Vue.component('index', __webpack_require__(82));
 var createUser = Vue.component('createUser', __webpack_require__(86));
 var login = Vue.component('login', __webpack_require__(91));
 var mainPage = Vue.component('mainPage', __webpack_require__(98));
+var admin = Vue.component('admin', __webpack_require__(108));
+var changePassword = Vue.component('changePassword', __webpack_require__(110));
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
-  routes: [{ path: '/', redirect: '/index' }, { path: '/users', component: user }, { path: '/userEdit', component: userEdit }, { path: '/createUser', component: createUser, meta: { forVisitors: true } }, { path: '/singletictactoe', component: singleplayer_game }, { path: '/multitictactoe', component: multiplayerGame }, { path: '/index', component: index }, { path: '/login', component: login, meta: { forVisitors: true } }, { path: '/mainPage', component: mainPage, meta: { forAuth: true } }]
+  routes: [{ path: '/', redirect: '/index' }, { path: '/users', component: user }, { path: '/userEdit', component: userEdit }, { path: '/createUser', component: createUser, meta: { forVisitors: true } }, { path: '/singletictactoe', component: singleplayer_game }, { path: '/multitictactoe', component: multiplayerGame }, { path: '/index', component: index }, { path: '/login', component: login, meta: { forVisitors: true } }, { path: '/mainPage', component: mainPage, meta: { forAuth: true } }, { path: '/admin', component: admin, meta: { forAuth: true } }, { path: '/changePassword', component: changePassword }]
 });
 router.beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
     return record.meta.forVisitors;
   })) {
     if (Vue.auth.isAuthenticated()) {
+      /*if (Vue.auth.isAdmin()) {
+        next({
+          path: '/admin'
+        })
+      }else */
       next({
         path: '/mainPage'
       });
@@ -899,7 +906,7 @@ module.exports = g;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 var normalizeHeaderName = __webpack_require__(29);
 
 var DEFAULT_CONTENT_TYPE = {
@@ -1060,7 +1067,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(58)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(60)
 /* template */
@@ -1346,7 +1353,7 @@ process.umask = function() { return 0; };
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 var settle = __webpack_require__(30);
 var buildURL = __webpack_require__(32);
 var parseHeaders = __webpack_require__(33);
@@ -4228,7 +4235,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(72)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(74)
 /* template */
@@ -4309,7 +4316,7 @@ if(false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(4);
-module.exports = __webpack_require__(108);
+module.exports = __webpack_require__(115);
 
 
 /***/ }),
@@ -34118,7 +34125,7 @@ module.exports = __webpack_require__(26);
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 var bind = __webpack_require__(10);
 var Axios = __webpack_require__(28);
 var defaults = __webpack_require__(6);
@@ -34205,7 +34212,7 @@ function isSlowBuffer (obj) {
 
 
 var defaults = __webpack_require__(6);
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 var InterceptorManager = __webpack_require__(37);
 var dispatchRequest = __webpack_require__(38);
 var isAbsoluteURL = __webpack_require__(40);
@@ -34297,7 +34304,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -34377,7 +34384,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -34452,7 +34459,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 /**
  * Parse headers into an object
@@ -34496,7 +34503,7 @@ module.exports = function parseHeaders(headers) {
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -34614,7 +34621,7 @@ module.exports = btoa;
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -34674,7 +34681,7 @@ module.exports = (
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -34733,7 +34740,7 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 var transformData = __webpack_require__(39);
 var isCancel = __webpack_require__(14);
 var defaults = __webpack_require__(6);
@@ -34819,7 +34826,7 @@ module.exports = function dispatchRequest(config) {
 "use strict";
 
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(3);
 
 /**
  * Transform the data for a request or a response
@@ -45826,7 +45833,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(49)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(52)
 /* template */
@@ -46038,7 +46045,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(54)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(56)
 /* template */
@@ -46169,9 +46176,17 @@ module.exports = {
 			this.editingUser = null;
 			this.$emit('delete-click', user);
 		},
-		definePlayer: function definePlayer(user, player) {
-			this.$root.$data['player' + player] = user;
-			this.$emit('message', user.name + ' selected as Player' + player);
+		/*definePlayer: function(user,player){
+  	this.$root.$data['player'+player] = user;
+  	this.$emit('message', user.name+' selected as Player'+player);
+  }*/
+		blockUser: function blockUser(user) {
+			this.editingUser = user;
+			this.$emit('block-click', user);
+		},
+		activateUser: function activateUser(user) {
+			this.editingUser = user;
+			this.$emit('activate-click', user);
 		}
 	}
 };
@@ -46194,25 +46209,25 @@ var render = function() {
           "tr",
           { key: user.id, class: { activerow: _vm.editingUser === user } },
           [
-            _c("td", [_vm._v(_vm._s(user.name))]),
+            _c("td", [_vm._v(_vm._s(user.fullName))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(user.email))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(user.nickname))]),
+            _c("td", [_vm._v(_vm._s(user.nickName))]),
             _vm._v(" "),
             _c("td", [
               _c(
                 "a",
                 {
-                  staticClass: "btn btn-xs btn-success",
+                  staticClass: "btn btn-xs btn-danger",
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      _vm.definePlayer(user, 1)
+                      _vm.blockUser(user)
                     }
                   }
                 },
-                [_vm._v("P1")]
+                [_vm._v("Block")]
               ),
               _vm._v(" "),
               _c(
@@ -46222,11 +46237,11 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      _vm.definePlayer(user, 2)
+                      _vm.activateUser(user)
                     }
                   }
                 },
-                [_vm._v("P2")]
+                [_vm._v("Activate")]
               ),
               _vm._v(" "),
               _c(
@@ -46246,7 +46261,7 @@ var render = function() {
               _c(
                 "a",
                 {
-                  staticClass: "btn btn-xs btn-danger",
+                  staticClass: "btn btn-xs btn-warning",
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -46627,7 +46642,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(64)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(66)
 /* template */
@@ -46947,7 +46962,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(69)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(71)
 /* template */
@@ -47358,7 +47373,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(77)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(79)
 /* template */
@@ -47756,7 +47771,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(83)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = null
 /* template */
@@ -47898,7 +47913,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(87)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(89)
 /* template */
@@ -48408,7 +48423,7 @@ function injectStyle (ssrContext) {
   cssModules["$style"] = __webpack_require__(19)
 Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(96)
 /* template */
@@ -48774,6 +48789,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -48955,7 +48971,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(99)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(101)
 /* template */
@@ -49337,7 +49353,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(103)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(105)
 /* template */
@@ -49773,6 +49789,423 @@ if (false) {
 
 /***/ }),
 /* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(109)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/admin.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-26ed6d3c", Component.options)
+  } else {
+    hotAPI.reload("data-v-26ed6d3c", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("td", { staticClass: "textGreen" }, [_vm._v("Admin ")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-26ed6d3c", module.exports)
+  }
+}
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(111)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(113)
+/* template */
+var __vue_template__ = __webpack_require__(114)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-5f214230"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/changePassword.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f214230", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f214230", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(112);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(1)("44dc3a29", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5f214230\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./changePassword.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5f214230\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./changePassword.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.form-group[data-v-5f214230]{\r\n    color:#35495e;\r\n    font-size:20px;\n}\n.titulo[data-v-5f214230]{\r\n    color:#41b883;\r\n    font-size:30px;\n}\n.cancel[data-v-5f214230]{\r\n    background-color:#35495e;\r\n    border-radius:28px;\r\n    border:1px solid #18ab29;\r\n    display:inline-block;\r\n    cursor:pointer;\r\n    color:#41b883;\r\n    font-family:Arial;\r\n    font-size:12px;\r\n    padding:6px 15px;\r\n    text-decoration:none;\r\n    text-shadow:0px 1px 0px #2f6627;\n}\n.save[data-v-5f214230]{\r\n    background-color:#41b883;\r\n    border-radius:28px;\r\n    border:1px solid #35495e;\r\n    display:inline-block;\r\n    cursor:pointer;\r\n    color:#35495e;\r\n    font-family:Arial;\r\n    font-size:12px;\r\n    padding:6px 15px;\r\n    text-decoration:none;\r\n    text-shadow:0px 1px 0px #2f6627;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 113 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vueapp_js__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            user: {
+                password: ''
+            }
+        };
+    },
+
+    methods: {
+        savePassword: function savePassword() {
+            var _this = this;
+
+            //axios.put('api/user/',{headers: getHeader()})
+            axios.get('api/user/' + localStorage.getItem("id")).then(function (response) {
+                console.log(response);
+                var newPassword = bcrypt(_this.user.password);
+                var oldPassword = response.data.password;
+                var inputOldPassword = _this.user.oldPassword;
+                if (inputOldPassword == oldPassword) {
+                    console.log(newPassword);
+                    console.log(oldPassword);
+                    console.log(inputOldPassword);
+                    axios.put('api/user/changePassword/' + response.data.id, _this.user).then(function (response) {
+                        console.log(response);
+                    });
+                } else {
+                    swal("Wrong Password");
+                }
+            });
+        },
+        cancel: function cancel() {
+            var _this2 = this;
+
+            axios.get('/api/user', { headers: Object(__WEBPACK_IMPORTED_MODULE_0__vueapp_js__["getHeader"])() }).then(function (response) {
+                // Copy object properties from response.data.data to this.user
+                // without creating a new reference
+                Object.assign(_this2.user, response.data.data);
+                _this2.$emit('user-canceled', _this2.user);
+            });
+        }
+    }
+    /*
+    module.exports={
+        props: ['user'],
+        methods: {
+            savePassword: function(){
+                axios.put('api/user/'+localStorage.getItem("id"), this.user)
+                    .then(response=>{
+                        // Copy object properties from response.data.data to this.user
+                        // without creating a new reference
+                        Object.assign(this.user, response.data.data);
+                        this.$emit('user-saved', this.user)
+                    });
+            },
+            cancel: function(){
+                axios.get('/api/user', {headers: getHeader()})
+                    .then(response=>{
+                        // Copy object properties from response.data.data to this.user
+                        // without creating a new reference
+                        Object.assign(this.user, response.data.data);
+                        this.$emit('user-canceled', this.user);
+                    });
+            }
+        }
+    }*/
+
+});
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group", attrs: { align: "left" } }, [
+      _c("label", { attrs: { for: "inputOldPassword" } }, [
+        _vm._v("Old Password")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.user.oldPassword,
+            expression: "user.oldPassword"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "password",
+          name: "oldPassword",
+          id: "inputOldPassword",
+          placeholder: "Old Password"
+        },
+        domProps: { value: _vm.user.oldPassword },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.user, "oldPassword", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group", attrs: { align: "left" } }, [
+      _c("label", { attrs: { for: "inputNewPassword" } }, [
+        _vm._v("New Password")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.user.password,
+            expression: "user.password"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "password",
+          name: "newPassword",
+          id: "inputNewPassword",
+          placeholder: "New Password"
+        },
+        domProps: { value: _vm.user.password },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.user, "password", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "form-group", attrs: { align: "left" } },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "save",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.savePassword()
+              }
+            }
+          },
+          [_vm._v("Save")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "cancel",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.cancel()
+              }
+            }
+          },
+          [_vm._v("Cancel")]
+        ),
+        _vm._v(" "),
+        _c("router-link", { attrs: { to: "/users" } }, [
+          _vm._v("Reset Password")
+        ])
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { align: "left" } }, [
+      _c("h2", { staticStyle: { color: "#41b883" } }, [
+        _vm._v("Change Password")
+      ]),
+      _vm._v(" "),
+      _c("br")
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5f214230", module.exports)
+  }
+}
+
+/***/ }),
+/* 115 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -35,6 +35,8 @@ const index = Vue.component('index', require('./components/index.vue'));
 const createUser = Vue.component('createUser', require('./components/createUser.vue'));
 const login = Vue.component('login', require('./components/login.vue'));
 const mainPage = Vue.component('mainPage', require('./components/mainPage.vue'));
+const admin = Vue.component('admin', require('./components/admin.vue'));
+const changePassword = Vue.component('changePassword', require('./components/changePassword.vue'));
 
 
 const router = new VueRouter({
@@ -47,13 +49,20 @@ const router = new VueRouter({
     { path: '/multitictactoe', component: multiplayerGame },
     { path: '/index', component: index },
     { path: '/login', component: login, meta:{forVisitors: true}},
-    { path: '/mainPage', component: mainPage, meta:{forAuth: true}}
+    { path: '/mainPage', component: mainPage, meta:{forAuth: true}},
+    { path: '/admin', component: admin, meta:{forAuth: true}},
+    { path: '/changePassword', component: changePassword }
   ]
 });
 router.beforeEach(
   (to,from,next)=>{
     if(to.matched.some(record => record.meta.forVisitors)){
       if(Vue.auth.isAuthenticated()){
+        /*if (Vue.auth.isAdmin()) {
+          next({
+            path: '/admin'
+          })
+        }else */
         next({
           path: '/mainPage'
         })

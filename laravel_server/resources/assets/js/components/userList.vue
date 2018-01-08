@@ -10,14 +10,14 @@
 	    </thead>
 	    <tbody>
 	        <tr v-for="user in users"  :key="user.id" :class="{activerow: editingUser === user}">
-	            <td>{{ user.name }}</td>
+	            <td>{{ user.fullName }}</td>
 	            <td>{{ user.email }}</td>
-	            <td>{{ user.nickname }}</td>
+	            <td>{{ user.nickName }}</td>
 	            <td>
-					<a class="btn btn-xs btn-success" v-on:click.prevent="definePlayer(user,1)">P1</a>
-					<a class="btn btn-xs btn-success" v-on:click.prevent="definePlayer(user,2)">P2</a>
+	            	<a class="btn btn-xs btn-danger" v-on:click.prevent="blockUser(user)">Block</a>
+	            	<a class="btn btn-xs btn-success" v-on:click.prevent="activateUser(user)">Activate</a>
 	                <a class="btn btn-xs btn-primary" v-on:click.prevent="editUser(user)">Edit</a>
-	                <a class="btn btn-xs btn-danger" v-on:click.prevent="deleteUser(user)">Delete</a>
+	                <a class="btn btn-xs btn-warning" v-on:click.prevent="deleteUser(user)">Delete</a>
 	            </td>
 	        </tr>
 	    </tbody>
@@ -36,15 +36,23 @@
         methods: {
             editUser: function(user){
                 this.editingUser = user;
-                this.$emit('edit-click', user);
+                this.$emit('edit-click', user);	
             },		
             deleteUser: function(user){
                 this.editingUser = null;
                 this.$emit('delete-click', user);
 			},
-			definePlayer: function(user,player){
+			/*definePlayer: function(user,player){
 				this.$root.$data['player'+player] = user;
 				this.$emit('message', user.name+' selected as Player'+player);
+			}*/
+			blockUser: function(user){
+				this.editingUser = user;
+				this.$emit('block-click', user);
+			},
+			activateUser: function(user){
+				this.editingUser = user;
+				this.$emit('activate-click', user);
 			}
         },		
 	}

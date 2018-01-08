@@ -36,4 +36,13 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /*public function login(Request $request)
+    {
+         $user = User::where('email', $request->get('email'))->firstOrFail();
+
+         if ($user->admin == 1) {
+            $redirectTo = '/'
+         }
+    }*/
 }

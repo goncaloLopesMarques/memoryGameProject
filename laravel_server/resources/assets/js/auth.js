@@ -56,7 +56,8 @@ export default function(vue){
             }else{
                 return false;
             }
-        }
+        },
+        
     }
 
 }
