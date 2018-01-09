@@ -34,6 +34,7 @@ import {getHeader} from  '../vueapp.js'
         data() {
             return {
                 user: {
+                    id: '',
                     password: '',
                 }
             }
@@ -41,23 +42,30 @@ import {getHeader} from  '../vueapp.js'
         methods: {
             savePassword: function(){
                 //axios.put('api/user/',{headers: getHeader()})
+                var bcrypt = require('bcryptjs');
                 axios.get('api/user/'+localStorage.getItem("id"))
                     .then(response=>{
                         console.log(response);
                         var newPassword = this.user.password;
                         var oldPassword = response.data.password;
                         var inputOldPassword = this.user.oldPassword;
-                        if (inputOldPassword==oldPassword) {
-                            console.log(newPassword);
-                            console.log(oldPassword);
-                            console.log(inputOldPassword);
-                            axios.put('api/user/changePassword/'+response.data.id, this.user)
-                            .then(response=>{
-                                console.log(response);
+                        this.user.id = response.data.id;
+                        var user = this.user
+                        //if (inputOldPassword==oldPassword) {
+                            bcrypt.compare(inputOldPassword, oldPassword, function(err, res) {
+                              if (err){
+                                // handle error
+                              }
+                              if (res){
+                                axios.put('api/user/changePassword/'+response.data.id, user)
+                                .then(response=>{
+                                    console.log(response);
+                                    swal("Password changed!");
+                                });
+                              } else {
+                                swal("Wrong Password");
+                              }
                             });
-                        }else{
-                            swal("Wrong Password");
-                        }
                     });
             },
             cancel: function(){
