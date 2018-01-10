@@ -79,30 +79,7 @@ import {getHeader} from  '../vueapp.js'
             }
         }
     }
-    /*
-    module.exports={
-        props: ['user'],
-        methods: {
-            savePassword: function(){
-                axios.put('api/user/'+localStorage.getItem("id"), this.user)
-                    .then(response=>{
-                        // Copy object properties from response.data.data to this.user
-                        // without creating a new reference
-                        Object.assign(this.user, response.data.data);
-                        this.$emit('user-saved', this.user)
-                    });
-            },
-            cancel: function(){
-                axios.get('/api/user', {headers: getHeader()})
-                    .then(response=>{
-                        // Copy object properties from response.data.data to this.user
-                        // without creating a new reference
-                        Object.assign(this.user, response.data.data);
-                        this.$emit('user-canceled', this.user);
-                    });
-            }
-        }
-    }*/
+ 
 </script>
 
 <style scoped>  

@@ -19,11 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('user/{id}', function($id){
    return User::findOrFail($id);
 });
+
+
+
 Route::get('users', 'UserControllerAPI@getUsers');
-//edite USer
+//edit User
 Route::get('/user/{id}','UserControllerAPI@showUser');
 Route::put('/user/{id}', 'UserControllerAPI@update');
-Route::put('/user/changePassword/{id}', 'UserControllerAPI@changePassword');
+
 //
 Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
 Route::get('users/{id}', 'UserControllerAPI@getUser');
@@ -40,4 +43,17 @@ Route::post('games', 'GameControllerAPI@store');
 Route::patch('games/{id}/join-start', 'GameControllerAPI@joinAndStart');
 Route::patch('games/{id}/endgame/{winner}', 'GameControllerAPI@endgame');
 
+//images
+Route::get('images/{id}', 'ImageControllerAPI@getImage');
+Route::post('images', 'ImageControllerAPI@store');
+Route::put('/image/{id}', 'ImageControllerAPI@update');
+Route::delete('images/{id}', 'ImageControllerAPI@delete');
+Route::get('images', 'ImageControllerAPI@getImages');
 
+//config
+Route::get('/config/{id}', 'ConfigControllerAPI@getConfig');
+Route::put('/config/{id}', 'ConfigControllerAPI@changePlatformEmail');
+
+//admin
+Route::put('/user/changePassword/{id}', 'UserControllerAPI@changePassword');
+Route::put('/user/changeAdminEmail/{id}', 'UserControllerAPI@changeAdminEmail');

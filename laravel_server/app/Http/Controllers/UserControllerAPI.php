@@ -58,6 +58,16 @@ class UserControllerAPI extends Controller
         return response()->json($user);
     }
 
+    public function changeAdminEmail(Request $request, $id)
+    {
+        $request->validate([
+                'email' => 'required|email|unique:users,email',
+            ]);
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json($user);
+    }
+
     public function changePassword(Request $request, $id)
     {
         $request->validate([

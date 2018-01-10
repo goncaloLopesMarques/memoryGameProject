@@ -37,7 +37,10 @@ const login = Vue.component('login', require('./components/login.vue'));
 const mainPage = Vue.component('mainPage', require('./components/mainPage.vue'));
 const admin = Vue.component('admin', require('./components/admin.vue'));
 const changePassword = Vue.component('changePassword', require('./components/changePassword.vue'));
-
+const changePlatformEmail = Vue.component('changePlatformEmail', require('./components/changePlatformEmail.vue'));
+const changeAdminEmail = Vue.component('changeAdminEmail', require('./components/changeAdminEmail.vue'));
+const image = Vue.component('image', require('./components/image.vue'));
+const imageList = Vue.component('imageList', require('./components/imageList.vue'));
 
 const router = new VueRouter({
   routes: [
@@ -51,7 +54,11 @@ const router = new VueRouter({
     { path: '/login', component: login, meta:{forVisitors: true}},
     { path: '/mainPage', component: mainPage, meta:{forAuth: true}},
     { path: '/admin', component: admin, meta:{forAuth: true}},
-    { path: '/changePassword', component: changePassword }
+    { path: '/changePassword', component: changePassword },
+    { path: '/changePlatformEmail', component: changePlatformEmail },
+    { path: '/changeAdminEmail', component: changeAdminEmail },
+    { path: '/images', component: image },
+    { path: '/imageList', component: imageList }
   ]
 });
 router.beforeEach(
