@@ -1,5 +1,19 @@
 <template>
 	<div>
-		<td class="textGreen">Admin </td>
+		<div>
+			<router-link to="/users">Users List</router-link>
+		</div>
+		<div>
+			<router-link to="/changePassword">Change Password</router-link>
+		</div>
+		<div>
+			<router-link to="/changePlatformEmail">Change Platform Email</router-link>
+		</div>
+		<div>
+			<router-link to="/changeAdminEmail">Change Admin Email</router-link>
+		</div>
+		<div>
+			<router-link to="/images">Images List</router-link>
+		</div>
 	</div>
-</template>
+</template>	

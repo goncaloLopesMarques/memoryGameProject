@@ -19,10 +19,16 @@
                 name="newPassword" id="inputNewPassword" 
                 placeholder="New Password"/>   
         </div>
+        <div class="form-group" align = "left">
+            <label for="inputPasswordConfirmation">New Password Confirmation</label>
+            <input
+                type="password" class="form-control" v-model="user.passwordConfirmation"
+                name="passwordConfirmation" id="inputPasswordConfirmation" 
+                placeholder="Password Confirmation"/>   
+        </div>
 
         <div class="form-group" align = "left">
             <a class="save" v-on:click.prevent="savePassword()">Save</a>
-            <a class="cancel" v-on:click.prevent="cancel()">Cancel</a>
             <router-link to="/users">Reset Password</router-link>
         </div>
     </div>
@@ -49,6 +55,7 @@ import {getHeader} from  '../vueapp.js'
                         var newPassword = this.user.password;
                         var oldPassword = response.data.password;
                         var inputOldPassword = this.user.oldPassword;
+                        var PasswordConfirmation = this.user.passwordConfirmation
                         this.user.id = response.data.id;
                         var user = this.user
                         //if (inputOldPassword==oldPassword) {
@@ -57,26 +64,21 @@ import {getHeader} from  '../vueapp.js'
                                 // handle error
                               }
                               if (res){
-                                axios.put('api/user/changePassword/'+response.data.id, user)
-                                .then(response=>{
-                                    console.log(response);
-                                    swal("Password changed!");
-                                });
+                                if (newPassword==PasswordConfirmation) {
+                                    axios.put('api/user/changePassword/'+response.data.id, user)
+                                    .then(response=>{
+                                        console.log(response);
+                                        swal("Password changed!");
+                                    });
+                                }else{
+                                    swal("New Password and Password Confirmation do not match!");
+                                }
                               } else {
                                 swal("Wrong Password");
                               }
                             });
                     });
             },
-            cancel: function(){
-                axios.get('/api/user', {headers: getHeader()})
-                    .then(response=>{
-                        // Copy object properties from response.data.data to this.user
-                        // without creating a new reference
-                        Object.assign(this.user, response.data.data);
-                        this.$emit('user-canceled', this.user);
-                    });
-            }
         }
     }
  

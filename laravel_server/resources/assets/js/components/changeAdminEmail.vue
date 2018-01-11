@@ -14,7 +14,6 @@
         </div>
         <div class="form-group" align = "left">
             <a class="save" v-on:click.prevent="saveEmail()">Save</a>
-            <a class="cancel" v-on:click.prevent="cancel()">Cancel</a>
         </div>
     </div>
 </template>
@@ -52,9 +51,6 @@
                     
                 });
             },
-            cancel: function(){
-            }
-
         }
     }
 </script>

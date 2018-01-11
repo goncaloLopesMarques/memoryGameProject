@@ -62688,18 +62688,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c(
+      "div",
+      [_c("router-link", { attrs: { to: "/users" } }, [_vm._v("Users List")])],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      [
+        _c("router-link", { attrs: { to: "/changePassword" } }, [
+          _vm._v("Change Password")
+        ])
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      [
+        _c("router-link", { attrs: { to: "/changePlatformEmail" } }, [
+          _vm._v("Change Platform Email")
+        ])
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      [
+        _c("router-link", { attrs: { to: "/changeAdminEmail" } }, [
+          _vm._v("Change Admin Email")
+        ])
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      [
+        _c("router-link", { attrs: { to: "/images" } }, [_vm._v("Images List")])
+      ],
+      1
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("td", { staticClass: "textGreen" }, [_vm._v("Admin ")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -62838,6 +62873,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -62861,6 +62902,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var newPassword = _this.user.password;
                 var oldPassword = response.data.password;
                 var inputOldPassword = _this.user.oldPassword;
+                var PasswordConfirmation = _this.user.passwordConfirmation;
                 _this.user.id = response.data.id;
                 var user = _this.user;
                 //if (inputOldPassword==oldPassword) {
@@ -62869,24 +62911,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         // handle error
                     }
                     if (res) {
-                        axios.put('api/user/changePassword/' + response.data.id, user).then(function (response) {
-                            console.log(response);
-                            swal("Password changed!");
-                        });
+                        if (newPassword == PasswordConfirmation) {
+                            axios.put('api/user/changePassword/' + response.data.id, user).then(function (response) {
+                                console.log(response);
+                                swal("Password changed!");
+                            });
+                        } else {
+                            swal("New Password and Password Confirmation do not match!");
+                        }
                     } else {
                         swal("Wrong Password");
                     }
                 });
-            });
-        },
-        cancel: function cancel() {
-            var _this2 = this;
-
-            axios.get('/api/user', { headers: Object(__WEBPACK_IMPORTED_MODULE_0__vueapp_js__["getHeader"])() }).then(function (response) {
-                // Copy object properties from response.data.data to this.user
-                // without creating a new reference
-                Object.assign(_this2.user, response.data.data);
-                _this2.$emit('user-canceled', _this2.user);
             });
         }
     }
@@ -73907,6 +73943,39 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
+    _c("div", { staticClass: "form-group", attrs: { align: "left" } }, [
+      _c("label", { attrs: { for: "inputPasswordConfirmation" } }, [
+        _vm._v("New Password Confirmation")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.user.passwordConfirmation,
+            expression: "user.passwordConfirmation"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "password",
+          name: "passwordConfirmation",
+          id: "inputPasswordConfirmation",
+          placeholder: "Password Confirmation"
+        },
+        domProps: { value: _vm.user.passwordConfirmation },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.user, "passwordConfirmation", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
     _c(
       "div",
       { staticClass: "form-group", attrs: { align: "left" } },
@@ -73923,20 +73992,6 @@ var render = function() {
             }
           },
           [_vm._v("Save")]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "cancel",
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                _vm.cancel()
-              }
-            }
-          },
-          [_vm._v("Cancel")]
         ),
         _vm._v(" "),
         _c("router-link", { attrs: { to: "/users" } }, [
@@ -74088,7 +74143,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -74121,8 +74175,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 }
             });
-        },
-        cancel: function cancel() {}
+        }
     }
 });
 
@@ -74183,20 +74236,6 @@ var render = function() {
           }
         },
         [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "cancel",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              _vm.cancel()
-            }
-          }
-        },
-        [_vm._v("Cancel")]
       )
     ])
   ])
@@ -74342,7 +74381,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -74375,9 +74413,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 }
             });
-        },
-        cancel: function cancel() {}
-
+        }
     }
 });
 
@@ -74436,20 +74472,6 @@ var render = function() {
           }
         },
         [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "cancel",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              _vm.cancel()
-            }
-          }
-        },
-        [_vm._v("Cancel")]
       )
     ])
   ])
