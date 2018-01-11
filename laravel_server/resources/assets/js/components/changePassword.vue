@@ -58,7 +58,6 @@ import {getHeader} from  '../vueapp.js'
                         var PasswordConfirmation = this.user.passwordConfirmation
                         this.user.id = response.data.id;
                         var user = this.user
-                        //if (inputOldPassword==oldPassword) {
                             bcrypt.compare(inputOldPassword, oldPassword, function(err, res) {
                               if (err){
                                 // handle error

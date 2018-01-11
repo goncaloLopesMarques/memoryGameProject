@@ -31,8 +31,9 @@ class ImageControllerAPI extends Controller
                 'face' => 'required',
                 'path' =>'required|unique:images',
             ]);
+        
         $image = new Image();
-        $image->fill($request->all());
+        $image->fill(/*$request->all()*/$request->except('file'));
         $image->save();
         return response()->json(new ImageResource($image), 201);
     }

@@ -41,6 +41,7 @@ const changePlatformEmail = Vue.component('changePlatformEmail', require('./comp
 const changeAdminEmail = Vue.component('changeAdminEmail', require('./components/changeAdminEmail.vue'));
 const image = Vue.component('image', require('./components/image.vue'));
 const imageList = Vue.component('imageList', require('./components/imageList.vue'));
+const uploadImage = Vue.component('uploadImage', require('./components/uploadImage.vue'));
 
 const router = new VueRouter({
   routes: [
@@ -58,7 +59,8 @@ const router = new VueRouter({
     { path: '/changePlatformEmail', component: changePlatformEmail },
     { path: '/changeAdminEmail', component: changeAdminEmail },
     { path: '/images', component: image },
-    { path: '/imageList', component: imageList }
+    { path: '/imageList', component: imageList },
+    { path: '/uploadImage', component: uploadImage }
   ]
 });
 router.beforeEach(

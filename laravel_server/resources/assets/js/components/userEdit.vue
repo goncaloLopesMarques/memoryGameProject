@@ -26,6 +26,27 @@
 	            name="nickName" id="inputNickName" 
 	            placeholder="Nickname"/>
 	    </div>
+	    <div class="form-group" align = "left">
+	        <label for="inputOldPassword">Old Password</label>
+	        <input
+	            type="password" class="form-control" v-model="user.oldPassword"
+	            name="oldPassword" id="inputOldPassword" 
+	            placeholder="Old Password"/>
+	    </div>
+	    <div class="form-group" align = "left">
+	        <label for="inputPassword">New Password</label>
+	        <input
+	            type="password" class="form-control" v-model="user.password"
+	            name="password" id="inputPassword" 
+	            placeholder="Password"/>
+	    </div>
+	    <div class="form-group" align = "left">
+	        <label for="inputPasswordConfirmation">Password Confirmation</label>
+	        <input
+	            type="password" class="form-control" v-model="user.passwordConfirmation"
+	            name="passwordConfirmation" id="inputPasswordConfirmation" 
+	            placeholder="Password Confirmation"/>
+	    </div>
 
 	    <div class="form-group" align = "left">
 	        <a class="save" v-on:click.prevent="saveUser()">Save</a>
@@ -39,20 +60,49 @@
 		props: ['user'],
 	    methods: {
 	        saveUser: function(){
-	            axios.put('api/user/'+this.user.id, this.user)
-	                .then(response=>{
-	                	// Copy object properties from response.data.data to this.user
-	                	// without creating a new reference
-	                	Object.assign(this.user, response.data.data);
-	                	this.$emit('user-saved', this.user)
-	                });
+	        	var bcrypt = require('bcryptjs');
+	        	axios.get('api/user/'+localStorage.getItem("id"))
+                    .then(response=>{
+                        console.log(response);
+                        var newPassword = this.user.password;
+                        var oldPassword = response.data.password;
+                        var inputOldPassword = this.user.oldPassword;
+                        var PasswordConfirmation = this.user.passwordConfirmation
+	            		this.user.id = response.data.id;
+                        var user = this.user
+                        console.log(newPassword);
+                        console.log(oldPassword);
+                        console.log(inputOldPassword);
+                        console.log(PasswordConfirmation);
+                        bcrypt.compare(inputOldPassword, oldPassword, function(err, res) {
+                            if (err){
+                                // handle error
+                            }
+                            if (res){
+                                if (newPassword==PasswordConfirmation) {
+                                     axios.put('api/user/'+user.id, user)
+	                				.then(response=>{
+					                	//Object.assign(this.user, response.data.data);
+					                	//this.$emit('user-saved', this.user);
+					                	swal("User Saved!");
+	                				});
+                                }else{
+                                    swal("New Password and Password Confirmation do not match!");
+                                }
+                            } else {
+                                swal("Wrong Password");
+                            }
+                        }); 
+                    });      
 	        },
 	        cancelEdit: function(){
 	        	axios.get('api/user/'+this.user.id)
 	                .then(response=>{
+	                	console.log(response);
 	                	// Copy object properties from response.data.data to this.user
 	                	// without creating a new reference
 	                	Object.assign(this.user, response.data.data);
+	                	console.log(this.user);
 	                	this.$emit('user-canceled', this.user);
 	                });
 	        }

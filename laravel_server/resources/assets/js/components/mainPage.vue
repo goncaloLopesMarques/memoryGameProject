@@ -156,7 +156,6 @@
 						this.user.fullName = response.data.fullName;
 						this.user.nickName = response.data.nickName;
 						this.user.email = response.data.email;
-						
 
 					});
 					

@@ -54,6 +54,7 @@ class UserControllerAPI extends Controller
                 'nickName' =>'required|unique:users',
             ]);
         $user = User::findOrFail($id);
+        $request['password'] = bcrypt($request['password']);
         $user->update($request->all());
         return response()->json($user);
     }
