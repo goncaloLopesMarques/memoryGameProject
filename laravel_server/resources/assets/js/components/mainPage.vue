@@ -1,6 +1,9 @@
 <template>
 	<div align = "right">
 	 <div align = "right">
+	 <div>
+	 	<router-link to="/admin">Admin Page</router-link>
+	 </div>
 	  <div>
 	    <h1>User details</h1>
 		<div>

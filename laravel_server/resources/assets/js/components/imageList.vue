@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div>
+		<div align="right">
 			<router-link to="/uploadImage">Upload New Image</router-link>
 		</div>
 		<table class="table table-striped">
@@ -20,7 +20,6 @@
 		            <td>{{ image.path }}</td>
 		            <td><img v-bind:src="ImageURL(image.path)" ></td>
 		            <td>
-		            	<a class="btn btn-xs btn-success" v-on:click.prevent="activateImage(image)">Activate</a>
 		                <a class="btn btn-xs btn-warning" v-on:click.prevent="deleteImage(image)">Delete</a>
 		            </td>
 		        </tr>
@@ -51,10 +50,6 @@
                 //this.editingUser = null;
                 this.$emit('delete-click', image);
 			},
-			activateImage: function(image){
-				//this.editingUser = user;
-				this.$emit('activate-click', image);
-			}
         },		
 	}
 </script>

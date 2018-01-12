@@ -21,6 +21,7 @@
          	 <button type="button" class="loginButton" v-on:click="login">Login</button>
 			 <router-link class="registerButton" :to="{ path: '/createUser' }">Register User</router-link>
              <router-link class="backButton" :to="{ path: '/' }">Back</router-link>
+             <router-link to="/resetPassword">Forgot Password?</router-link>
              <br>
          </div>
 	</div>	

@@ -4,7 +4,9 @@
             <h2 style="color:#41b883">Change Platform Email</h2>
             <br>
         </div>
-        
+        <div>
+            <router-link to="/admin">Back to Admin Page</router-link>
+        </div>
         <div class="form-group" align = "left">
             <label for="platform_email">Platform Email</label>
             <input
@@ -15,6 +17,14 @@
         <div class="form-group" align = "left">
             <a class="save" v-on:click.prevent="saveEmail()">Save</a>
         </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
 </template>
 

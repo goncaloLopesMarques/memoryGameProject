@@ -3,7 +3,9 @@
 		<div class="jumbotron">
 			<h1>{{ title }}</h1>
 		</div>
-
+		<div>
+            <router-link to="/admin">Back to Admin Page</router-link>
+        </div>
 		<image-list :images="images" @delete-click="deleteImage" @message="childMessage"></image-list>
 	
 		<div class="alert alert-success" v-if="showSuccess">

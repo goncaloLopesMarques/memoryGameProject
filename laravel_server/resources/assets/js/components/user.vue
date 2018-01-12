@@ -3,7 +3,9 @@
 		<div class="jumbotron">
 			<h1>{{ title }}</h1>
 		</div>
-
+		<div>
+            <router-link to="/admin">Back to Admin Page</router-link>
+        </div>
 		<user-list :users="users" @edit-click="editUser" @delete-click="deleteUser" @block-click="blockUser" @activate-click="activateUser" @message="childMessage" ref="usersListRef"></user-list>
 	
 		<div class="alert alert-success" v-if="showSuccess">

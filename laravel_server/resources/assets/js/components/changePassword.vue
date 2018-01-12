@@ -4,7 +4,9 @@
             <h2 style="color:#41b883">Change Password</h2>
             <br>
         </div>
-        
+        <div>
+            <router-link to="/admin">Back to Admin Page</router-link>
+        </div>
         <div class="form-group" align = "left">
             <label for="inputOldPassword">Old Password</label>
             <input
@@ -29,8 +31,16 @@
 
         <div class="form-group" align = "left">
             <a class="save" v-on:click.prevent="savePassword()">Save</a>
-            <router-link to="/users">Reset Password</router-link>
+            <router-link to="/resetPassword">Reset Password</router-link>
         </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
 </template>
 
