@@ -6,19 +6,14 @@
                 <form @submit.prevent="uploadImage(image)">
                     <div class="text-left">
                         <div>
-                            <label for="path">Path</label>
-                            <input type="text" class="form-control" id="path" placeholder="Enter image path (.png)" v-model="image.path">
-                        </div>
-                        <div>
                             <label for="face">Face</label>
                             <input type="text" class="form-control" id="face" placeholder="Enter image face type (tile/hidden)" v-model="image.face">
                         </div>
                         <div>
                             <label for="file">File</label>
-                            <input type="file"  @change="imageChanged" id="img" placeholder="Image file">
+                            <input type="file"  @change="imageChanged" id="path" placeholder="Image file">
                         </div>
                     </div>
-
                     <div class="text-center">
                         <button class="uploadButton">Upload</button>
                         <router-link class="backButton" :to="{ path: '/images' }">Back</router-link>
@@ -39,7 +34,6 @@
                 image: {
                     face:'',
                     path: '',
-                    file: '',
                 },
                 
             }
@@ -51,7 +45,7 @@
                 fileReader.readAsDataURL(e.target.files[0]);
 
                 fileReader.onload = (e) => {
-                    this.image.file = e.target.result;
+                    this.image.path = e.target.result;
                 }
                 console.log(this.image);
             },
@@ -59,7 +53,6 @@
                     this.image = {
                     path: null,
                     face: null,
-                    file: null,
                 }
             },
             uploadImage(image) {

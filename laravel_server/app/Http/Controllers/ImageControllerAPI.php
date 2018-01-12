@@ -27,13 +27,28 @@ class ImageControllerAPI extends Controller
 
     public function store(Request $request)
     {
+        $exploded = explode(',', $request->path);
+        $decoded = base64_decode($exploded[1]);
+
+        if (str_contains($exploded[0], 'jpeg')) {
+            $extension = 'jpg';
+        }else{
+            $extension = 'png';
+        }
+        $filename = str_random().'.'.$extension;
+        $imagePath = public_path().'/img/'.$filename;
+        file_put_contents($imagePath, $decoded);
+
         $request->validate([
                 'face' => 'required',
                 'path' =>'required|unique:images',
             ]);
         
         $image = new Image();
-        $image->fill(/*$request->all()*/$request->except('file'));
+        $image->fill(/*$request->all()*/$request->except('path') +[
+            'path' => $filename
+        ]);
+
         $image->save();
         return response()->json(new ImageResource($image), 201);
     }
