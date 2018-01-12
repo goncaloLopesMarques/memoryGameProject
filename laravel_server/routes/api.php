@@ -34,7 +34,11 @@ Route::post('users', 'UserControllerAPI@store');
 Route::post('/register','Auth\RegisterController@create');
 //Route::put('users/{id}', 'UserControllerAPI@update');
 Route::delete('users/{id}', 'UserControllerAPI@delete');
- 
+
+//Block and unblock users
+Route::put('user/blockUser/{id}', 'UserControllerAPI@blockUser');
+Route::put('user/activateUser/{id}', 'UserControllerAPI@activateUser');
+
 Route::get('games', 'GameControllerAPI@index');
 Route::get('games/lobby', 'GameControllerAPI@lobby');
 Route::get('games/status/{status}', 'GameControllerAPI@gamesStatus');

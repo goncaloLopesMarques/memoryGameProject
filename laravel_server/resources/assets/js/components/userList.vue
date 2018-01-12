@@ -5,6 +5,7 @@
 	            <th>Name</th>
 	            <th>Email</th>
 	            <th>Nickname</th>
+	            <th>Blocked</th>
 	            <th>Actions</th>
 	        </tr>
 	    </thead>
@@ -13,10 +14,11 @@
 	            <td>{{ user.fullName }}</td>
 	            <td>{{ user.email }}</td>
 	            <td>{{ user.nickName }}</td>
+	            <td>{{ user.blocked }}</td>
 	            <td>
 	            	<a class="btn btn-xs btn-danger" v-on:click.prevent="blockUser(user)">Block</a>
 	            	<a class="btn btn-xs btn-success" v-on:click.prevent="activateUser(user)">Activate</a>
-	                <a class="btn btn-xs btn-primary" v-on:click.prevent="editUser(user)">Edit</a>
+	                <!--<a class="btn btn-xs btn-primary" v-on:click.prevent="editUser(user)">Edit</a>-->
 	                <a class="btn btn-xs btn-warning" v-on:click.prevent="deleteUser(user)">Delete</a>
 	            </td>
 	        </tr>
@@ -30,7 +32,9 @@
 		props: ['users'],
 		data: function(){
 			return { 
-				editingUser: null
+				editingUser: null,
+				blockingUser: null,
+				activatingUser: null
 			}
 		},
         methods: {
@@ -42,10 +46,6 @@
                 this.editingUser = null;
                 this.$emit('delete-click', user);
 			},
-			/*definePlayer: function(user,player){
-				this.$root.$data['player'+player] = user;
-				this.$emit('message', user.name+' selected as Player'+player);
-			}*/
 			blockUser: function(user){
 				this.editingUser = user;
 				this.$emit('block-click', user);

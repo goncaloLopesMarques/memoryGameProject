@@ -29,6 +29,8 @@ Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 const user = Vue.component('user', require('./components/user.vue'));
 const userEdit = Vue.component('userEdit', require('./components/userEdit.vue'));
+const userBlock = Vue.component('userBlock', require('./components/userBlock.vue'));
+const userActivate = Vue.component('userActivate', require('./components/userActivate.vue'));
 const singleplayer_game = Vue.component('singlegame', require('./components/singleplayer_tictactoe.vue'));
 const multiplayerGame = Vue.component('multiplayergame', require('./components/multiplayer_tictactoe.vue'));
 const index = Vue.component('index', require('./components/index.vue'));
@@ -60,7 +62,9 @@ const router = new VueRouter({
     { path: '/changeAdminEmail', component: changeAdminEmail },
     { path: '/images', component: image },
     { path: '/imageList', component: imageList },
-    { path: '/uploadImage', component: uploadImage }
+    { path: '/uploadImage', component: uploadImage },
+    { path: '/userBlock', component: userBlock },
+    { path: '/userActivate', component: userActivate }
   ]
 });
 router.beforeEach(

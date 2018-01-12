@@ -20,6 +20,9 @@ class User extends Authenticatable
         'nickName',
         'email', 
         'password',
+        'blocked',
+        'reason_blocked',
+        'reason_reactivated',
         
     ];
 

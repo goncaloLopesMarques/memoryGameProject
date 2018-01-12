@@ -45,9 +45,28 @@
                 fileReader.readAsDataURL(e.target.files[0]);
 
                 fileReader.onload = (e) => {
-                    this.image.path = e.target.result;
+
+                    let img = new Image();
+                    img.src = e.target.result;
+                    console.log('image1:' +img.src);
+                    let image = this.image;
+                    img.onload = function () {
+                        let width = this.width;
+                        let height = this.height;
+                        //console.log(width);
+                        //console.log(height);
+                        if (width =! 48 || height != 48) {
+                            swal('Invalid image size. Please enter 48x48 pixels');
+                        }else{
+                            console.log('Valid image');
+                            //img.src = e.target.result;
+                            image.path = img.src;
+                        }
+                    }
+                    //this.image.path = e.target.result;
+                    //console.log('image2:' +this.image.path);
                 }
-                console.log(this.image);
+                
             },
             resetImage() {
                     this.image = {

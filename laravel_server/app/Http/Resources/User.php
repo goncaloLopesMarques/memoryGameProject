@@ -20,6 +20,7 @@ class User extends Resource
             'nickName' => $this->nickName,
             'email' => $this->email,
             'password' => $this->password,
+            'blocked' => $this->blocked,
         ];
     }
 }

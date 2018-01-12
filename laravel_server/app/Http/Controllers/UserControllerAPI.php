@@ -80,6 +80,28 @@ class UserControllerAPI extends Controller
         return response()->json($user);
     }
 
+    public function blockUser(Request $request, $id)
+    {
+        $request->validate([
+                'blocked' => 'required',
+                'reason_blocked' => 'required',
+            ]);
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json($user);
+    }
+
+    public function activateUser(Request $request, $id)
+    {
+        $request->validate([
+                'blocked' => 'required',
+                'reason_reactivated' => 'required',
+            ]);
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json($user);
+    }
+
     public function delete($id)
     {
         $user = User::findOrFail($id);
