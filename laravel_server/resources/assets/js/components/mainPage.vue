@@ -33,7 +33,8 @@
 			</td>
 		</tr>
         <tr>
-          <td><button class="logOut" v-on:click.prevent="createGame">Create a New Game</button></td>
+          	<td><button class="logOut" v-on:click.prevent="createGameMulti">Create a MultiPlayer Game</button></td> 
+      		<td><button class="edit" v-on:click.prevent="createGameSingle">Create a SinglePlayer Game</button></td>
 		</tr>
 	  </table>
 	
@@ -185,13 +186,13 @@
 			 },
 				 //lobby methods
 			 loadLobby(){
-              /// send message to server to load the list of games on the lobby
-              this.$socket.emit('get_my_loby_games');
-			 },
-			 loadActiveGames(){
+        		/// send message to server to load the list of games on the lobby
+              	this.$socket.emit('get_my_loby_games',{playerName: this.user.nickName});
+       		},
+			loadActiveGames(){
                 /// send message to server to load the list of games that player is playing
-				this.$socket.emit('get_my_activegames');
-			},
+		        this.$socket.emit('get_my_activegames',{playerName: this.user.nickName});     
+		    },
 			remove(game){
 				if(game.gamePlayers[0].name != this.user.nickName){
 					swal("Error", "Cannot delete another person game", "error");
@@ -215,26 +216,44 @@
 				  this.$socket.emit('start_game', { game: game, linhas: linhas, colunas: colunas});
 				}
 			},
-			createGame(){
-                // For this to work, server must handle (on event) the "create_game" message
-                if (this.user == null) {
-                    alert('Current Player is Empty - Cannot Create a Game');
-                    return;
-                }
-                else {
-					this.$socket.emit('create_game', { playerName: this.user.nickName });
-                }
+			createGameMulti(){ 
+			     if (this.user == null) { 
+			          alert('Current Player is Empty - Cannot Create a Game'); 
+			            return; 
+			        } else { 
+			             this.$socket.emit('createMulti_game', { playerName: this.user.nickName });
+			        }
+			}, 
+		    createGameSingle(){ 
+		         if (this.user == null) { 
+		                    alert('Current Player is Empty - Cannot Create a Game'); 
+		                    return; 
+		                } else { 
+		          this.$socket.emit('createSingle_game', { playerName: this.user.nickName }); 
+		                } 
+		    },
+		    play(game, index){ 
+               this.$socket.emit('play',{ 
+                   gameID: game.gameID,  
+                   index:index 
+               }); 
             },
-			 join: function(game){
-                if(game.player1 == this.user.nickName){
-                    swal("Error", "Cannot join your own game", "error");
-                    return;
-                }
-                this.$socket.emit('join_game',{
-                     gameID: game.gameID,
-                     playerName: this.user.nickName
-                });
-			},  
+			join: function(game){
+		         if(game.numberOfPlayers >= 4){
+		          swal("Error", "The game is full", "error");  
+		          return;
+		         }
+		         for(var i = 0; i <game.numberOfPlayers; i++){
+		           if (game.players[i].name == game.playerName) {
+		           swal("Error", "Cannot join to your own game or you already joined", "error");
+		           return;
+		             }
+		         }
+		                this.$socket.emit('join_game',{
+		                     gameID: game.gameID,
+		                     playerName: this.user.nickName
+		                });
+		    },
 			 
 		},		
 	   mounted() {

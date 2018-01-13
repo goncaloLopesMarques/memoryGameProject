@@ -1,5 +1,5 @@
 <template>
-	<div class="gameseparator">
+  <div class="gameseparator">
         <div>
             <h2 class="text-center">Game {{game.gameID}}</h2>
             <br>
@@ -16,11 +16,10 @@
                 <th><button class=".btn-success" v-on:click.prevent="startGame" >StartGame</button></th>
             </tr>
             </tr>
-          </table>   
-            
+          </table>        
         </div>
         </div>
-
+ 
         <div class="game-zone-content">       
             <div class="alert" :class="alerttype">
                 <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;<a v-on:click.prevent="closeGame">Close Game</a></strong>
@@ -29,11 +28,14 @@
                 Players:
             </div>
             <div align ="center">
-                <h1>{{this.gameType}}</h1>
+                <h1>{{computedGameType}}</h1>
+            </div>
+<div align ="center">
+                <h1 v-if="winnerTrue">{{gameWinner}}</h1>
             </div>
             <div align = "left">
-              <li v-for="item in this.players">
-                {{ item }}
+              <li v-for="item in gamePlayers">
+                {{ item }} 
               </li>
             </div>
              
@@ -44,39 +46,54 @@
             </div>
             <hr>
         </div>  
-    </div>			
+    </div>      
 </template>
 <script type="text/javascript">
  import swal from 'sweetalert';
-	export default {
-        props: ['game','user'],
+  export default {
+        props: ['game','user','update'],
         data: function(){
-			return {
+      return {
                 started: true,
                 linhas:4,
                 colunas:4,
                 socketId: '',
                 players:[],
-                gameType: ''
-            }
+                gameType:'',
+                winnerTrue: false,
+                winner:'',
+ }
         },
-        mounted(){
-            this.fillThingsUp();
-        },
-
+ 
         computed: {
+             gamePlayers: function(){
+                   var aux =0;
+                for(var i = 0 ; i< this.game.numberOfPlayers; i++){
+                    aux++;
+                   this.players[i] = 'Player: '+aux+'   '+
+                   this.game.gamePlayers[i].name +" Pontos: " +this.game.gamePlayers[i].points + " Moves: "+ this. game.gamePlayers[i].moves
+                      
+                }
+                return this.players
+             },
+             computedGameType: function(){
+               if(this.game.type ==1){
+                   return this.gameType = "SinglePlayer"
+                }else{
+                   return this.gameType = "MultiPlayer"
+                }
+             },
              ownPlayerNumber(){
                 if(this.game.gamePlayers[0].playerSocketID == this.$parent.socketId){
-
+                    
                  return this.game.gamePlayers[0].id;
-
+ 
                 }else if(this.game.gamePlayers[1].playerSocketID == this.$parent.socketId){
                 
                  return this.game.gamePlayers[1].id;
                 
                 }else if(this.game.gamePlayers[2].playerSocketID == this.$parent.socketId){
-                 
-                 return this.game.gamePlayers[2].id;    
+return this.game.gamePlayers[2].id;    
                 
                 }else if(this.game.gamePlayers[3].playerSocketID == this.$parent.socketId){
                  
@@ -85,13 +102,12 @@
                 }
                 
             },
-
-           message(){
+message(){
                 // return Message to show
                 if (!this.game.gameStarted) {
                     return "Game has not started yet";
                 } else if (this.game.gameEnded) {
-                    if (this.game.winner == this.ownPlayerNumber) {
+                    if (this.game.winner.id == this.ownPlayerNumber) {
                         return "Game has ended. YOU WIN!!";
                     } else if (this.game.winner == 0) {
                         return "Game has ended. It's a Tie!!";
@@ -106,24 +122,20 @@
                 }
                 return "Game is inconsistent";
             },
+ 
             adversaryName(){
                 var ownNumber = this.ownPlayerNumber;
-                if(ownNumber == 1){
-                    return this.players[0].name;
+ 
+                if(ownNumber == this.game.gamePlayers.length){
+                   return this.game.gamePlayers[0].name
                 }
-                if(ownNumber == 2){
-                    return this.players[1].name;
-                }
-                if(ownNumber == 3){
-                    return this.players[2].name;
-                }
-                if(ownNumber == 4){
-                    return this.players[3].name;
-                }
-                return "unnknown";
-                
+                if(ownNumber <this.game.gamePlayers.length){
+                   return this.game.gamePlayers[ownNumber].name
+                }else{
+                   return "unnknown";
+                 }      
             },
-            alerttype(){
+ alerttype(){
                  if(!this.game.gameStarted){
                    return "aler-warning";
                }else if(this.game.gameEnded){
@@ -144,20 +156,18 @@
             }
            
         },
+        
         methods: {
             startGame(){
                 if(this.linhas >= 4 && this.colunas >= 4){
                 this.$parent.startGame(this.game,this.linhas,this.colunas);
-                this.started = null;
-                this.fillThingsUp()
-                console.log(this.players)
-                console.log(this.game)  
+                this.started = null;  
                 }else{
                     swal("Error", "The minimum value is 4", "error");
                 }
                 
             },
-            closeGame (){
+closeGame (){
                 // Click to close game
                 this.$parent.remove(this.game);
             },
@@ -166,9 +176,7 @@
                     if(this.game.playerTurn != this.ownPlayerNumber){
                         alert("its not your turn!");
                     }else{
-                        if(this.game.board[index]==0){
                             this.$parent.play(this.game,index);
-                        }
                     }
                 }
             },
@@ -177,28 +185,14 @@
                 var imgSrc = String(piece);
                 return 'img/' + imgSrc + '.png';
             },
-            fillThingsUp(){
-                var aux =0
-                for(var i = 0 ; i< this.game.numberOfPlayers; i++){
-                   aux ++;
-                   this.players[i] = 'Player'+aux+' '+this.game.gamePlayers[i].name;
-                    
-                }
-                if(this.game.numberOfPlayers ==1){
-                    this.gameType = "SinglePlayer"
-                }else{
-                    this.gameType = "MultiPlayer"
-                }
-                
-                return this.players
-            }
+         
  
         }
        
     }
 </script>
-
-<style scoped>	
+ 
+<style scoped>  
 .gameseparator{
     border-style: solid;
     border-width: 2px 0 0 0;
